@@ -7,6 +7,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 var cors = require('cors');
+const path = require('path');
 
 // set up express app
 const app = express();
