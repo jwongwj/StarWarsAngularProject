@@ -13,15 +13,44 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <link rel="stylesheet" type="text/css" href="/src/index.css">
 </head>
+<script>
+  $( document ).ready(function() {
+    
+  setTimeout(function() {
+      $(".starwars-demo").empty();
+    }, 5000);
+  });
+
+  setTimeout(function(){
+   $('.detailsdiv').show();
+   $('.Headerdiv').show();
+   $('.footerdiv').show();
+   $('.contentdiv').show();
+  }, 7000);
+</script>
 <body>
+  <div class="wrapper">
     <!-- <nav class="navbar navbar-toggleable-sm navbar-trans navbar-inverse">
         <a class="navbar-brand navbar-url" href="#">
           <img width="40" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
           Star Wars Project&nbsp;
         </a>
       </nav>       -->
-  
-      <!-- Our Header -->
+      <div class="Headerdiv">
+          <img src="../../src/Images/HeaderStarWars.jpg" class="HeaderStarWars">
+      </div>
+
+      <div class="starwars-demo">
+          <img src="//cssanimation.rocks/demo/starwars/images/star.svg" alt="Star" class="star">
+          <img src="//cssanimation.rocks/demo/starwars/images/wars.svg" alt="Wars" class="wars">
+      </div>
       <app-root></app-root>
+
+      <div class="footerdiv">
+        <div class="ftdiv">
+            <div class="creditstext">Made By: <a href="https://github.com/NoohEst">Esther Hoon</a> & <a href="https://github.com/jwongwj">Jayden Wong</a><div class="footertext">Institute of System Science - Graduate Diploma in System Analysis Batch 46</div></div>
+        </div>
+      </div>
+</div>
 </body>
 </html>
