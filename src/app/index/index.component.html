@@ -1,3 +1,7 @@
-<p>
-  index works!
-</p>
+<div>
+  <ul>
+    <li *ngFor="let index of arr" (click)="getValue(index)">
+      {{index}}
+    </li>
+  </ul>
+  </div>
