@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-index',
@@ -15,7 +16,7 @@ export class IndexComponent implements OnInit {
   open:Boolean=false;
   property:string;
 
-  constructor(private data: ApiService) { 
+  constructor(private data: ApiService, private msg: MessageService) { 
     const index = this.data.getIndex().subscribe(value => {
       this.arr = Object.keys(value);
       index.unsubscribe();
@@ -28,11 +29,9 @@ export class IndexComponent implements OnInit {
   }
 
   loadList(property) {
-    console.log(this.open);
     this.list=[];
     this.currentPage=1;
     this.totalPages=undefined;
-    console.log(property);
     this.getList(property)
   }
 
@@ -52,8 +51,6 @@ export class IndexComponent implements OnInit {
 
   getList(property){
     const list = this.data.getList(property,this.currentPage).subscribe(value=>{
-      console.log("index returnList()>>>>>>")
-      console.log(value);
       let items= value['results'];
       let arr=[];
       for(let item of items){
@@ -66,10 +63,14 @@ export class IndexComponent implements OnInit {
       this.list=arr;
       if(this.totalPages==undefined){
         this.totalPages=Math.ceil(value["count"]/10);
-        console.log(`TotalPages: ${this.totalPages}`)
       }
-      console.log(this.currentPage);
+      this.msg.setApiVariables(property, this.currentPage);
       list.unsubscribe()
     })
+  }
+
+  setDetails(value: String){
+    this.msg.setURLValue(value);
+    this.msg.getURL();
   }
 }

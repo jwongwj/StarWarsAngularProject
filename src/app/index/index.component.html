@@ -10,7 +10,7 @@
               {{ item | titlecase }}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <p *ngFor="let a of list">{{a}}</p>
+        <p class="pList" *ngFor="let element of list" (click)='setDetails(element)'>{{element}}</p>
     <mat-action-row>
       <tr>
           <td>
