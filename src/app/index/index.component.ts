@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
+import { ListModel } from '../../Model/CharacterModel'
 
 @Component({
   selector: 'app-index',
@@ -9,38 +10,67 @@ import { ApiService } from '../api.service';
 export class IndexComponent implements OnInit {
 
   arr = [];
+  list = [];
+  currentPage:number;
+  totalPages:number;
+  open:Boolean=false;
+  property:string;
 
-  constructor(private data : ApiService) { }
+  constructor(private data: ApiService) { 
+    const index = this.data.getIndex().subscribe(value => {
+      this.arr = Object.keys(value);
+      index.unsubscribe();
+    }, error => {
+      console.log(error);
+    });
+  }
 
   ngOnInit() {
-    let index = this.data.getIndex().subscribe(value =>{
-      var key;
-      for(key in value){
-        var str = this.uppercaseFirstLetter(key);
-        this.arr.push(str);
-      }
-      index.unsubscribe();
-    })
+  }
+
+  loadList(property) {
+    console.log(this.open);
+    this.list=[];
+    this.currentPage=1;
+    this.totalPages=undefined;
+    console.log(property);
+    this.getList(property)
+  }
+
+  nextClick(property){
+    if(this.currentPage<this.totalPages){
+      this.currentPage++;
+    }
+    this.getList(property)
   }
   
-  uppercaseFirstLetter(string) 
-  {
-    if (typeof string !== 'string') return ''
-      return string.charAt(0).toUpperCase() + string.slice(1);
+  prevClick(property){
+    if(this.currentPage>1){
+      this.currentPage--;
+    }
+    this.getList(property)
   }
 
-  lowercaseFirstLetter(string){
-    if (typeof string !== 'string') return ''
-    return string.charAt(0).toLowerCase() + string.slice(1);
-  }
-
-  getValue(property){
-    var valueToBePassed = "";
-    let index = this.data.getIndex().subscribe(value =>{
-      var str = this.lowercaseFirstLetter(property);
-      valueToBePassed = value[str];
-      console.log(valueToBePassed)
-      index.unsubscribe();
+  getList(property){
+    const list = this.data.getList(property,this.currentPage).subscribe(value=>{
+      console.log("index returnList()>>>>>>")
+      console.log(value);
+      let items= value['results'];
+      let arr=[];
+      for(let item of items){
+        if(item['name']!=null || item['name']!=undefined){
+          arr.push(item['name']);
+        }else{
+          arr.push(item['title']);
+        }
+      }
+      this.list=arr;
+      if(this.totalPages==undefined){
+        this.totalPages=Math.ceil(value["count"]/10);
+        console.log(`TotalPages: ${this.totalPages}`)
+      }
+      console.log(this.currentPage);
+      list.unsubscribe()
     })
   }
 }

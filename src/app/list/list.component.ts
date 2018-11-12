@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ApiService } from '../api.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  @Input() index:string;
+  @Output() selectedItem = new EventEmitter<string>();
+  list$:Observable<any[]>
+
+  constructor(private data:ApiService) { }
 
   ngOnInit() {
+  }
+
+  getList(){
+
   }
 
 }

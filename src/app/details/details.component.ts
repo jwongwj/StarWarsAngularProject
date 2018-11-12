@@ -8,7 +8,7 @@ import { ApiService } from '../api.service';
 })
 export class DetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private data:ApiService) { }
 
   ngOnInit() {
   }  

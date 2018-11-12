@@ -1,7 +1,29 @@
 <div>
-  <ul>
-    <li *ngFor="let index of arr" (click)="getValue(index)">
-      {{index}}
-    </li>
-  </ul>
-  </div>
+  <h2>Categories</h2>
+</div>
+
+<div>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let item of arr; index as i" class='indexExpansion'>
+        <mat-expansion-panel-header (click)='open==false?open=true:open=false; loadList(item);'>
+          <mat-panel-description>
+              {{ item | titlecase }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <p *ngFor="let a of list">{{a}}</p>
+    <mat-action-row>
+      <tr>
+          <td>
+              <input type="text" [value]='currentPage' style="width: 20px; text-align: center">/{{totalPages}}
+          </td>
+        <td>
+            <button mat-button [disabled]='currentPage<=1' (click)="prevClick(item)">Previous</button>
+        </td>
+        <td>
+            <button mat-button [disabled]='currentPage>=totalPages' (click)="nextClick(item)">Next</button>
+        </td>
+      </tr>
+      </mat-action-row>
+      </mat-expansion-panel>
+  </mat-accordion>
+</div>

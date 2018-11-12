@@ -6,17 +6,19 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class ApiService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
+  url:string="https://swapi.co/api/";
 
-  getIndex(){
-    return this.http.get('https://swapi.co/api/')
+  getIndex() {
+    return this.http.get(this.url);
   }
 
-  getList(list){
-    return this.http.get('https://swapi.co/api/' + list)
+  getList(list:string, page) {
+    const params=new HttpParams().set('page',page)
+    return this.http.get(`${this.url}${list}/`,{params:params});
   }
 
-  getDetails(list, details){
-    return this.http.get('https://swapi.co/api/' + list + '/' + details)
+  getDetails(list, details) {
+    return this.http.get(`${this.url}${list}/${details}`);
   }
 }

@@ -1,0 +1,9 @@
+.indexExpansion p{
+    cursor: pointer;
+}
+
+.indexExpansion mat-panel-description{
+    text-align: center;
+    display: inline;
+    font-weight: bold;
+}
