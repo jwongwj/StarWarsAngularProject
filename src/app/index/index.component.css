@@ -7,3 +7,8 @@
     display: inline;
     font-weight: bold;
 }
+
+#noOpacity{
+    background: black;
+    opacity: 1; 
+}

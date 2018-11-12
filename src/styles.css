@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Required for Angular Material to work properly */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 body{
     background: url('../src/assets/Images/BackgroundStarWars.jpg') no-repeat center center fixed; 
     -webkit-background-size: cover;
@@ -8,4 +12,20 @@ body{
     position: relative;
     height: 100%;
     width: 100%;    
+}
+
+/* To disable website if Javascript is disabled */
+.noJavascript{
+    text-align: center;
+    color: white;
+    vertical-align: 50%;
+    font-size: 30px;
+    padding-top: 20%;
+
+}
+
+.noJavascriptMain{
+    background-color: black;
+    opacity: 0.7;
+    height: 723px;
 }

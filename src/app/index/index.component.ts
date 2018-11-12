@@ -27,7 +27,7 @@ export class IndexComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  
   loadList(property) {
     this.list=[];
     this.currentPage=1;
