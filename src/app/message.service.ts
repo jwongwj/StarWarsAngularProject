@@ -19,10 +19,7 @@ export class MessageService {
     const list = this.data.getDetails(this.property, this.value).subscribe(value=>{
       let items= value['results'][0];
       this.apiDetails = items;
-      this.detailsPage = true;
-      this.indexPage = false;
-
-      list.unsubscribe()
+      list.unsubscribe();
     })
   }
 

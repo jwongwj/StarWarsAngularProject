@@ -8,7 +8,7 @@ import { DetailsComponent } from './details/details.component';
 import { MatExpansionModule, MatButtonModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { HttpErrorInterceptor } from '../app/httperrorinterceptor';
+import { HttpErrorInterceptor } from './httperrorinterceptor';
 
 @NgModule({
   declarations: [
