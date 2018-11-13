@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { MessageService } from '../message.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-index',
@@ -13,10 +14,10 @@ export class IndexComponent implements OnInit {
   list = [];
   currentPage:number;
   totalPages:number;
-  open:Boolean=false;
   property:string;
+  isOpened:boolean=false;
 
-  constructor(private data: ApiService, private msg: MessageService) { 
+  constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { 
     const index = this.data.getIndex().subscribe(value => {
       this.arr = Object.keys(value);
       index.unsubscribe();
@@ -29,10 +30,20 @@ export class IndexComponent implements OnInit {
   }
   
   loadList(property) {
-    this.list=[];
-    this.currentPage=1;
-    this.totalPages=undefined;
-    this.getList(property)
+    if(property!=this.property){
+      this.isOpened=true;
+      this.property=property;
+      this.list=[];
+      this.currentPage=1;
+      this.totalPages=undefined;
+      this.getList(property)
+    }else{
+      if(this.isOpened){
+        this.isOpened=false;
+      }else{
+        this.isOpened=true;
+      }
+    }
   }
 
   nextClick(property){
@@ -50,6 +61,7 @@ export class IndexComponent implements OnInit {
   }
 
   getList(property){
+    this.spinner.show();
     const list = this.data.getList(property,this.currentPage).subscribe(value=>{
       let items= value['results'];
       let arr=[];
@@ -66,6 +78,7 @@ export class IndexComponent implements OnInit {
       }
       this.msg.setApiVariables(property, this.currentPage);
       list.unsubscribe()
+      this.spinner.hide();
     })
   }
 

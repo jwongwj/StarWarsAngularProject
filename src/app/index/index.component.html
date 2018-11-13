@@ -5,8 +5,14 @@
 <div class="noOpacity">
   <mat-accordion>
     <mat-expansion-panel *ngFor="let item of arr; index as i" class='indexExpansion'>
-        <mat-expansion-panel-header (click)='open==false?open=true:open=false; loadList(item);'>
+        <mat-expansion-panel-header (click)='loadList(item);' [hidden]="isOpened==true&&item!=property">
           <mat-panel-description>
+                <ngx-spinner
+                bdColor = "rgba(0,0,0,0.50)"
+                size = "default"
+                color = "#fffbfb"
+                type = "ball-atom"
+                ></ngx-spinner>
               {{ item | titlecase }}
           </mat-panel-description>
         </mat-expansion-panel-header>
@@ -14,7 +20,7 @@
     <mat-action-row>
       <tr>
           <td>
-              <input type="text" [value]='currentPage' style="width: 20px; text-align: center">/{{totalPages}}
+              <input #box type="number" [value]='currentPage' style="width: 30px; text-align: center" (keyup.enter)="currentPage=box.value; getList(item,box.value)">/{{totalPages}}
           </td>
         <td>
             <button mat-button [disabled]='currentPage<=1' (click)="prevClick(item)">Previous</button>
@@ -26,4 +32,5 @@
       </mat-action-row>
       </mat-expansion-panel>
   </mat-accordion>
+
 </div>
