@@ -3,7 +3,6 @@ import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../api.service';
 import { StarshipsModel, SpeciesModel, FilmsModel, PeopleModel, VehiclesModel, PlanetsModel } from '../../Model/StarwarsModel';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-details',
@@ -12,7 +11,7 @@ import { TitleCasePipe } from '@angular/common';
 })
 export class DetailsComponent implements OnInit {
 
-  constructor(private msgSvc : MessageService, private data : ApiService, private spinner:NgxSpinnerService, private titlecasePipe : TitleCasePipe) { }
+  constructor(private msgSvc : MessageService, private data : ApiService, private spinner:NgxSpinnerService) { }
   arr: string[];
   apiDetails;
   model: string;
