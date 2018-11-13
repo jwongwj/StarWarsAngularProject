@@ -16,6 +16,7 @@ export class IndexComponent implements OnInit {
   totalPages:number;
   property:string;
   isOpened:boolean=false;
+  isError:boolean=false;
 
   constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { 
     const index = this.data.getIndex().subscribe(value => {
@@ -34,35 +35,43 @@ export class IndexComponent implements OnInit {
       this.isOpened=true;
       this.property=property;
       this.list=[];
-      this.currentPage=1;
       this.totalPages=undefined;
-      this.getList(property)
+      this.getList(property, 1)
     }else{
       if(this.isOpened){
         this.isOpened=false;
       }else{
         this.isOpened=true;
+        if(this.isError){
+          let page=this.currentPage||1;
+          this.getList(property,page);
+        }
       }
     }
   }
 
   nextClick(property){
+    let page:number=this.currentPage || 1;
     if(this.currentPage<this.totalPages){
-      this.currentPage++;
+      page++
     }
-    this.getList(property)
+    this.getList(property, page);
   }
   
   prevClick(property){
+    let page:number=this.currentPage || 1;
     if(this.currentPage>1){
-      this.currentPage--;
+      page--
     }
-    this.getList(property)
+    this.getList(property, page);
   }
 
-  getList(property){
+  getList(property, page){
     this.spinner.show();
-    const list = this.data.getList(property,this.currentPage).subscribe(value=>{
+    let cPage=this.currentPage;
+    this.currentPage=page;
+    const list = this.data.getList(property,page).subscribe(value=>{
+      this.isError=false;
       let items= value['results'];
       let arr=[];
       for(let item of items){
@@ -77,7 +86,12 @@ export class IndexComponent implements OnInit {
         this.totalPages=Math.ceil(value["count"]/10);
       }
       this.msg.setApiVariables(property, this.currentPage);
-      list.unsubscribe()
+      list.unsubscribe();
+      this.spinner.hide();
+    },error=>{
+      console.log(error);
+      this.isError=true;
+      this.currentPage=cPage;
       this.spinner.hide();
     })
   }

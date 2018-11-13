@@ -20,13 +20,13 @@
     <mat-action-row>
       <tr>
           <td>
-              <input #box type="number" [value]='currentPage' style="width: 30px; text-align: center" (keyup.enter)="currentPage=box.value; getList(item,box.value)">/{{totalPages}}
+              <input #box type="number" [value]='currentPage' style="width: 30px; text-align: center" (keyup.enter)="getList(item,box.value)" [hidden]='totalPages==undefined'>/{{totalPages}}
           </td>
         <td>
             <button mat-button [disabled]='currentPage<=1' (click)="prevClick(item)">Previous</button>
         </td>
         <td>
-            <button mat-button [disabled]='currentPage>=totalPages' (click)="nextClick(item)">Next</button>
+            <button mat-button [disabled]='currentPage>=totalPages || totalPages==undefined' (click)="nextClick(item)">Next</button>
         </td>
       </tr>
       </mat-action-row>
