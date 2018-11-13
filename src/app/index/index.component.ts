@@ -98,6 +98,7 @@ export class IndexComponent implements OnInit {
 
   setDetails(value: String){
     this.msg.setURLValue(value);
-    this.msg.getURL();
+    this.msg.setDetailsPage(true);
+    this.msg.setIndexPage(false);
   }
 }

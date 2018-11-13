@@ -16,7 +16,12 @@
     <!-- Main Div -->
     <div class="detailsdiv">
         <div class="contentdiv">
-            <app-index></app-index>
+            <div *ngIf="displayIndex()">
+                <app-index></app-index>
+            </div>
+            <div *ngIf="displayDetails()">
+                <app-details></app-details>
+            </div>
         </div>
     </div>
 

@@ -9,7 +9,9 @@ export class MessageService {
   property: string; 
   page: string;
   value: string;
-  apiDetails: Object;
+  apiDetails;
+  private indexPage: boolean;
+  private detailsPage: boolean;
 
   constructor(private data : ApiService) { }
 
@@ -17,7 +19,9 @@ export class MessageService {
     const list = this.data.getDetails(this.property, this.value).subscribe(value=>{
       let items= value['results'][0];
       this.apiDetails = items;
-      console.log(this.apiDetails);
+      this.detailsPage = true;
+      this.indexPage = false;
+
       list.unsubscribe()
     })
   }
@@ -29,5 +33,21 @@ export class MessageService {
   setApiVariables(property, page){
     this.property = property;
     this.page = page;
+  }
+
+  getIndexPage(){
+    return this.indexPage;
+  }
+
+  setIndexPage(bool : boolean){
+    this.indexPage = bool;
+  }
+
+  getDetailsPage(){
+    return this.detailsPage
+  }
+
+  setDetailsPage(bool : boolean){
+    this.detailsPage = bool;
   }
 }

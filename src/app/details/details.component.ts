@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-details',
@@ -8,8 +9,13 @@ import { ApiService } from '../api.service';
 })
 export class DetailsComponent implements OnInit {
 
-  constructor(private data:ApiService) { }
+  constructor(private data:ApiService, private msgSvc : MessageService) { }
 
   ngOnInit() {
+    this.msgSvc.getURL();
   }  
+
+  getUrl(){
+    console.log(this.msgSvc.apiDetails)
+  }
 }
