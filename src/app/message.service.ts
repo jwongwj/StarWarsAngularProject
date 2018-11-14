@@ -10,6 +10,7 @@ export class MessageService {
   page: string;
   value: string;
   apiDetails;
+  id;
   private indexPage: boolean;
   private detailsPage: boolean;
 
@@ -23,8 +24,20 @@ export class MessageService {
     })
   }
 
+  getImgSrc(){
+    let prop=this.property.toLowerCase().trim();
+    if(prop=="people"){
+      prop='characters'
+    }
+    return `https://starwars-visualguide.com/assets/img/${prop}/${this.id}.jpg`
+  }
+
   setURLValue(value){
     this.value = value;
+  }
+
+  setID(id){
+    this.id=id;
   }
 
   setApiVariables(property, page){

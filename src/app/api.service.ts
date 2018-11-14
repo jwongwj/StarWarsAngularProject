@@ -41,4 +41,9 @@ export class ApiService {
     const params=new HttpParams().set('search',details)
     return this.http.get(`${this.url}${list}/`,{params: params});
   }
+
+  
+  getURL(url){
+    return this.http.get(url);
+  }
 }

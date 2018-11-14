@@ -16,10 +16,13 @@
     <!-- Main Div -->
     <div class="detailsdiv">
         <div class="contentdiv">
-            <div *ngIf="displayIndex()">
+            <div [hidden]="displayDetails()">
                 <app-index></app-index>
             </div>
             <div *ngIf="displayDetails()">
+                <button (click)="returnToList()">
+                    Back
+                </button>
                 <app-details></app-details>
             </div>
         </div>

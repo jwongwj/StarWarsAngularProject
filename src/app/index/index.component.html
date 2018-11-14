@@ -16,7 +16,7 @@
               {{ item | titlecase }}
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <p class="pList" *ngFor="let element of list" (click)='setDetails(element)'>{{element}}</p>
+        <p class="pList" *ngFor="let element of list" (click)='setDetails(element)'>{{element.name}}</p>
     <mat-action-row>
       <tr>
           <td>

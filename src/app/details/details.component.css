@@ -1,0 +1,14 @@
+.others img{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+.others table{
+    display: inline;
+}
+
+.picture{
+    height: 50%;
+    width: 50%;
+}

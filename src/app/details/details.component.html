@@ -1,6 +1,29 @@
 <p>
     details works!
 </p>
-  <button (click)="returnToList()">
-      Back
-  </button>
+  <div>
+      <img src="{{imgSrc}}" onerror="this.src='../../src/assets/Images/NoImage.jpg'" class="picture">
+  </div>
+
+  <div *ngFor="let a of arraySingle">
+      <p>{{a.key | titlecase}}: {{ a.value | titlecase }}</p>
+  </div>
+
+  <div *ngFor="let a of arrayArray" class="others">
+          <br>
+      <table>
+          <thead>
+            <th style="text-align: center; font-weight: bold">
+                {{a[0] | titlecase }}
+            </th>
+          </thead>
+          <tbody>
+              <tr>
+                  <td *ngFor="let b of a[1]">
+                      <p><img src='{{b.imgSrc}}' alt="Avatar" onerror="this.src='../../src/assets/Images/NoImage.jpg'"></p>
+                      <p>{{b.name}}</p>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+  </div>

@@ -19,15 +19,15 @@ export class IndexComponent implements OnInit {
   isError:boolean=false;
 
   constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { 
+  }
+
+  ngOnInit() {
     const index = this.data.getIndex().subscribe(value => {
       this.arr = Object.keys(value);
       index.unsubscribe();
     }, error => {
       console.log(error);
     });
-  }
-
-  ngOnInit() {
   }
   
   loadList(property) {
@@ -73,13 +73,23 @@ export class IndexComponent implements OnInit {
     const list = this.data.getList(property,page).subscribe(value=>{
       this.isError=false;
       let items= value['results'];
+      console.log(items);
       let arr=[];
       for(let item of items){
+        var name:string;
+        var id;
         if(item['name']!=null || item['name']!=undefined){
-          arr.push(item['name']);
+         name=item['name'];
         }else{
-          arr.push(item['title']);
+          name=item['title'];
         }
+        let urlArr=item['url'].split('/');
+        id=urlArr[urlArr.length-2];
+        var obj = {
+          name:name,
+          id:id
+        }
+        arr.push(obj);
       }
       this.list=arr;
       if(this.totalPages==undefined){
@@ -96,8 +106,9 @@ export class IndexComponent implements OnInit {
     })
   }
 
-  setDetails(value: String){
-    this.msg.setURLValue(value);
+  setDetails(value){
+    this.msg.setURLValue(value.name);
+    this.msg.setID(value.id);
     this.msg.setDetailsPage(true);
     this.msg.setIndexPage(false);
   }
