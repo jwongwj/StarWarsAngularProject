@@ -93,7 +93,6 @@ export class DetailsComponent implements OnInit {
           arr.push(key);
           for(let a of value){
             let obj={
-              name:name,
               url:a,
               imgSrc:this.getImgSrc(a)
             }
