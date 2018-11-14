@@ -52,15 +52,13 @@ export class DetailsComponent implements OnInit {
               this.arrayArray.push(arraysToAdd)
             }
           }
-        } else {
+        } else if(jsonValue.length > 0){
           // When jsonValue = [] && has value, we create new array to display the information separately in new Div
-          if(jsonValue.length > 0){
             for (let jsonArrayResults of jsonValue) {
               imageDetailsArray.push(this.mapImageDetailsModel(jsonArrayResults));
             }
             arraysToAdd.push(jsonKey, imageDetailsArray);
             this.arrayArray.push(arraysToAdd);
-          }
         }
       }
       console.log(this.arrayArray)
