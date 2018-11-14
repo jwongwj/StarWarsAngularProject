@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../api.service';
-import { StarshipsModel, SpeciesModel, FilmsModel, PeopleModel, VehiclesModel, PlanetsModel } from '../../Model/StarwarsModel';
+import { DetailsInfoModel, ImageDetailsModel } from '../../Model/StarwarsModel';
+import * as Constants from '../constants';
 
 @Component({
   selector: 'app-details',
@@ -11,189 +12,126 @@ import { StarshipsModel, SpeciesModel, FilmsModel, PeopleModel, VehiclesModel, P
 })
 export class DetailsComponent implements OnInit {
 
-  constructor(private msgSvc : MessageService, private data : ApiService, private spinner:NgxSpinnerService) { }
-  arr: string[];
-  apiDetails;
-  model: string;
-  starshipsModel: StarshipsModel;
-  speciesModel: SpeciesModel;
-  peopleModel: PeopleModel;
-  arraySingle: any[]=[];
-  arrayArray: any[]=[];
-  arrayTime: any[]=[];
-  itemURL:any;
+  constructor(private msgSvc: MessageService, private data: ApiService, private spinner: NgxSpinnerService) { }
+  arraySingle: any[] = [];
+  arrayArray: any[] = [];
+  arrayTime: any[] = []; // to remove ?
+  itemURL: any;
   imgSrc: string;
 
   ngOnInit() {
-    this.showDetails1();
-    this.imgSrc=this.msgSvc.getImgSrc();
-    this.generateModel();
-  }  
-
-  showDetails(){
-    this.spinner.show();
-    const list = this.data.getDetails(this.msgSvc.property, this.msgSvc.value).subscribe(value=>{
-      this.peopleModel = value['results'][0];
-      console.log(value);
-      console.log(this.peopleModel);
-      console.log(this.peopleModel.gender);
-      list.unsubscribe();
-      this.spinner.hide();
-    },error=>{
-      console.log(error);
-      this.spinner.hide();
-    })
+    this.showDetails();
+    this.imgSrc = this.msgSvc.getImgSrc();
   }
 
-  showDetails1(){
-    this.arraySingle=[];
-    this.arrayArray=[];
-    const list = this.data.getDetails(this.msgSvc.property, this.msgSvc.value).subscribe(value=>{
+  showDetails() {
+    this.resetShowDetails();
+    const list = this.data.getDetails(this.msgSvc.property, this.msgSvc.value).subscribe(value => {
       list.unsubscribe();
-      let array = value['results'][0];
-      console.log(array);
-      for( var item of Object.entries(array)){
-        let key=item[0].split('_').join(' ')
-        let value = item[1];
-        let lowerkey=key.toLocaleLowerCase().trim()
-        if(!Array.isArray(value)){
-          if(!this.isValidURL(value)){
-            if(lowerkey=="created" || lowerkey=="edited"){
-              let object={
-                key:key,
-                value:value
-              }
-              this.arrayTime.push(object);
-            }else{
-              let object={
-                key:key,
-                value:value
-              }
-              this.arraySingle.push(object);
-            }
-          }else{
-            if(lowerkey=='url'){
-              this.itemURL=value;
-            }else{
-              let arr=[];
-              let arr1=[];
-              var obj={
-                url:value,
-                imgSrc:this.getImgSrc(value)
-              }
-              arr1.push(obj);
-              arr.push(key);
-              arr.push(arr1);
-              this.arrayArray.push(arr)
+      let jsonResults = value['results'][0];
+      console.log(jsonResults);
+
+      for (var item of Object.entries(jsonResults)) {
+        let jsonKey = item[0].split('_').join(' ');
+        let jsonValue = item[1];
+        let checkJsonKey = jsonKey.toLocaleLowerCase().trim();
+        let arraysToAdd = [], imageDetailsArray = [];
+        
+        if (!Array.isArray(jsonValue)) {
+          if (!this.isValidURL(jsonValue)) {
+            let info = this.mapDetailsInfoModel(jsonKey, jsonValue);
+            (checkJsonKey == Constants.STRING_CREATED
+              || checkJsonKey == Constants.STRING_EDITED) ? this.arrayTime.push(info) : this.arraySingle.push(info);
+
+          } else {
+            if (checkJsonKey == Constants.STRING_URL) {            
+              this.itemURL = jsonValue;// to remove ?
+            } else {
+              imageDetailsArray.push(this.mapImageDetailsModel(jsonValue));
+              arraysToAdd.push(jsonKey, imageDetailsArray); 
+              this.arrayArray.push(arraysToAdd)
             }
           }
-        }else{
-          let arr=[];
-          let arr1=[];
-          arr.push(key);
-          for(let a of value){
-            let obj={
-              url:a,
-              imgSrc:this.getImgSrc(a)
+        } else {
+          // When jsonValue = [] && has value, we create new array to display the information separately in new Div
+          if(jsonValue.length > 0){
+            for (let jsonArrayResults of jsonValue) {
+              imageDetailsArray.push(this.mapImageDetailsModel(jsonArrayResults));
             }
-            arr1.push(obj);
+            arraysToAdd.push(jsonKey, imageDetailsArray);
+            this.arrayArray.push(arraysToAdd);
           }
-          arr.push(arr1);
-          this.arrayArray.push(arr);
         }
       }
-
       console.log(this.arrayArray)
-    },error=>{
-      console.log(error);;
+    }, error => {
+      console.log(error);
     })
   }
 
-  returnToList(){
+  mapDetailsInfoModel(jsonKey, jsonValue) : DetailsInfoModel{
+    let info: DetailsInfoModel = {
+      key: jsonKey,
+      value: jsonValue
+    };
+    return info;
+  }
+
+  mapImageDetailsModel(jsonArrayResults) : ImageDetailsModel{
+    let imageDetails: ImageDetailsModel = {
+      url: jsonArrayResults,
+      imgSrc: this.getImgSrc(jsonArrayResults)
+    }
+    return imageDetails;
+  }
+
+  resetShowDetails() {
+    this.arraySingle = [];
+    this.arrayArray = [];
+  }
+
+  returnToList() {
+    // To-Do -> Create page routing PAGE_INDEX == something, return true. 
+    // Universal method for all pages - Every page requires abstract method of eg. PAGE_NAME="index"
     this.msgSvc.setIndexPage(true);
     this.msgSvc.setDetailsPage(false);
   }
 
-  generateModel(){
-    switch(this.msgSvc.property){
-      case "people":{
-        break;
-      }
-      case "people":{
-        break;
-      }
-      case "people":{
-        break;
-      }
-      case "people":{
-        break;
-      }
-      case "people":{
-        break;
-      }
-      case "people":{
-        break;
-      }
-      case "people":{
-        break;
-      }
-    }
-  }
-
   isValidURL(str) {
-    var pattern = new RegExp('^((https?:)?\\/\\/)?'+ // protocol
-        '(?:\\S+(?::\\S*)?@)?' + // authentication
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-        '(\\#[-a-z\\d_]*)?$','i'); // fragment locater
-    if (!pattern.test(str)) {
-        return false;
-    } else {
-        return true;
-    }
+    var pattern = new RegExp(
+      '^((https?:)?\\/\\/)?' + // protocol
+      '(?:\\S+(?::\\S*)?@)?' + // authentication
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', 'i' // fragment locater
+    ); 
+
+    return (!pattern.test(str)) ? false : true;
   }
 
-  getImgSrc(url){
-    let urlArr=url.split('/');
-    var id = urlArr[urlArr.length-2];
-    var prop = urlArr[urlArr.length-3];
-    if(prop=="people"){
-      prop='characters';
+  getImgSrc(url) {
+    let urlArr = url.split('/');
+    var id = urlArr[urlArr.length - 2];
+    var prop = urlArr[urlArr.length - 3];
+   
+    if (prop == Constants.STRING_PEOPLE) {
+      prop = Constants.STRING_CHARACTERS;
     }
     return `https://starwars-visualguide.com/assets/img/${prop}/${id}.jpg`
   }
 
-  getSubHeader(url){
-    let fetch=this.data.getURL(url).subscribe(value=>{
-      let name=value['name'];
-      if(name==undefined){
-        name=['title']
-      }
-      console.log(name)
-      fetch.unsubscribe();
-      return name;
-    })
-  }
-
-
-  // Should I use a general class instead of individual classes - To cater for strings / arrays
-  // eg. StringsModel{
-  //   image: string; - computed
-  //   labelValues : string[]; - from JSON key
-  //   extractedValues : string[]; - from JSON values
+  ////////// To Remove?
+  // getSubHeader(url) {
+  //   let fetch = this.data.getURL(url).subscribe(value => {
+  //     let name = value['name'];
+  //     if (name == undefined) {
+  //       name = ['title']
+  //     }
+  //     console.log(name)
+  //     fetch.unsubscribe();
+  //     return name;
+  //   })
   // }
-
-  // (if (Array.isArray)) Create new ArrayModel
-  // ArrayModel{
-  //   iconImages: string[]; - computed
-  //   urls: string[]; - from JSON values (if (Array.isArray))
-  // }
-
-  // If i do this, then I would need 2 NgFor :
-  // a. StringsModel (To show all general strings)
-  // b. ArrayModel (Render only if arr.size > 0)
-
-  // Note: If individual class I will need 6 NgIf
 }
