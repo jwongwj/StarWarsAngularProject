@@ -6,4 +6,5 @@ export interface DetailsInfoModel{
 export interface ImageDetailsModel{
     url: {};
     imgSrc: string;
+    name?:string;
 }

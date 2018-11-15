@@ -29,7 +29,6 @@ export class DetailsComponent implements OnInit {
     const list = this.data.getDetails(this.msgSvc.property, this.msgSvc.value).subscribe(value => {
       list.unsubscribe();
       let jsonResults = value['results'][0];
-      console.log(jsonResults);
 
       for (var item of Object.entries(jsonResults)) {
         let jsonKey = item[0].split('_').join(' ');
@@ -80,6 +79,14 @@ export class DetailsComponent implements OnInit {
       url: jsonArrayResults,
       imgSrc: this.getImgSrc(jsonArrayResults)
     }
+    const sub = this.data.getURL(jsonArrayResults).subscribe(value=>{
+      sub.unsubscribe();
+      let name = value['name'];
+      if (name==undefined){
+        name= value['title'];
+      }
+      imageDetails.name=name;
+    })
     return imageDetails;
   }
 
@@ -119,17 +126,4 @@ export class DetailsComponent implements OnInit {
     }
     return `https://starwars-visualguide.com/assets/img/${prop}/${id}.jpg`
   }
-
-  ////////// To Remove?
-  // getSubHeader(url) {
-  //   let fetch = this.data.getURL(url).subscribe(value => {
-  //     let name = value['name'];
-  //     if (name == undefined) {
-  //       name = ['title']
-  //     }
-  //     console.log(name)
-  //     fetch.unsubscribe();
-  //     return name;
-  //   })
-  // }
 }

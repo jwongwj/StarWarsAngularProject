@@ -73,7 +73,6 @@ export class IndexComponent implements OnInit {
     const list = this.data.getList(property,page).subscribe(value=>{
       this.isError=false;
       let items= value['results'];
-      console.log(items);
       let arr=[];
       for(let item of items){
         var name:string;
