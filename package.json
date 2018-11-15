@@ -21,6 +21,7 @@
     "@angular/material": "^7.0.3",
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
+    "@angular/pwa": "^0.10.6",
     "@angular/router": "^6.1.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.3",

@@ -1,29 +1,29 @@
-<p>
-    details works!
-</p>
-  <div>
-      <img src="{{imgSrc}}" onerror="this.src='../../src/assets/Images/NoImage.jpg'" class="picture">
-  </div>
+<div *ngFor="let labelItems of arraySingle; let i=index">
+    <div *ngIf="i == 0">
+        <h2>{{ labelItems.value }}</h2>
+        <div>
+            <img src="{{imgSrc}}" onerror="this.src='../../src/assets/Images/NoImage.jpg'" class="picture">
+        </div>
+    </div>
 
-  <div *ngFor="let a of arraySingle">
-      <p>{{a.key | titlecase}}: {{ a.value }}</p>
-  </div>
+    <div *ngIf="i > 0">
+        <label>{{labelItems.key | titlecase}}: {{ labelItems.value }}</label>
+    </div>
 
-  <div *ngFor="let a of arrayArray" class="others">
-          <br>
-      <table>
-          <thead>
-            <th style="text-align: center; font-weight: bold">
-                {{a[0] | titlecase }}
-            </th>
-          </thead>
-          <tbody>
-              <tr>
-                  <td *ngFor="let b of a[1]">
-                      <p><img src='{{b.imgSrc}}' alt="Avatar" onerror="this.src='../../src/assets/Images/NoImage.jpg'"></p>
-                      <p>{{b.name}}</p>
-                  </td>
-              </tr>
-          </tbody>
-      </table>
-  </div>
+</div>
+
+<div *ngFor="let detailed of arrayArray" class="others">
+    <br>
+    <label class="title">{{detailed[0] | titlecase }}</label>
+    <br>
+    <div *ngFor="let images of detailed[1]" class="detailsArray">
+        <div (click)="getNewDetails(images.newUrl)" class="divHover">
+            <div class="imageArray">
+                <img src='{{images.imgSrc}}' alt="Avatar" onerror="this.src='../../src/assets/Images/NoImage.jpg'">
+            </div>
+            <div class="labelArray">
+                {{images.name}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 /* Main Div */
 .detailsdiv{
     background: black;
-    opacity: 0.7;
+    /* opacity: 0.7; */
     text-align: center;
     height: 600px;
     width: 50%;
@@ -11,7 +11,7 @@
 
 .contentdiv{
     background: black;
-    opacity: 1; 
+    /* opacity: 1;  */
     text-align: center;
     height: 600px;
     width: 50%;
@@ -29,59 +29,5 @@
 }
 /* End of Main Div */
 
-/* Nav Bar */
-.navbar-url{
-    color: white;
-}
 
-.navbar-url:hover{
-    background: lightyellow;
-    color: maroon;
-    border-radius: 25px;
-}
-/* End of Nav Bar */
-
-/* Footer */
-.footertext{
-    color: white;
-}
-
-.creditstext :hover .footertext{
-    color: white;
-    display: block;
-}
-
-.footerdiv{
-    background: black;
-    opacity: 0.7;
-    text-align: center;
-    height: 65px;
-    width: 100%;
-    margin:0 auto;
-    margin-top: 10px;
-    margin-bottom: 0px;
-    position: absolute;
-    overflow: hidden;
-}
-
-.ftdiv{
-    background: black;
-    opacity: 1;
-    color: white;
-    padding-top: 7px;
-}
-/* End of Footer */
-
-/* Header */
-.Headerdiv{
-    text-align:center;
-}
-
-.HeaderStarWars{
-    width: 50%;
-    height: 250px;
-    opacity: 0.7;
-    z-index: 1;
-}
-/* End of Header */
 

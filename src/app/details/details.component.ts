@@ -82,10 +82,12 @@ export class DetailsComponent implements OnInit {
     const sub = this.data.getURL(jsonArrayResults).subscribe(value=>{
       sub.unsubscribe();
       let name = value['name'];
+      let url = value['url'];
       if (name==undefined){
         name= value['title'];
       }
       imageDetails.name=name;
+      imageDetails.newUrl=url;
     }, error=>{
       console.log(error);
     })
@@ -127,5 +129,54 @@ export class DetailsComponent implements OnInit {
       prop = Constants.STRING_CHARACTERS;
     }
     return `https://starwars-visualguide.com/assets/img/${prop}/${id}.jpg`
+  }
+
+  // Need to clean up this as i copy pasted alot
+  getNewDetails(url: string){
+    this.resetShowDetails();
+    this.itemURL = "";
+    var data = url.substr(21).slice(0, -1);
+    var id = data.split("/");
+    if(id[0]=="people"){
+      data='characters/' + id[1];
+    }
+    this.imgSrc = "https://starwars-visualguide.com/assets/img/" + data + ".jpg";
+    const sub = this.data.getURL(url).subscribe(value=>{
+      sub.unsubscribe();
+      let jsonResults = value;
+
+      for (var item of Object.entries(jsonResults)) {
+        let jsonKey = item[0].split('_').join(' ');
+        let jsonValue = item[1];
+        let checkJsonKey = jsonKey.toLocaleLowerCase().trim();
+        let arraysToAdd = [], imageDetailsArray = [];
+        
+        if (!Array.isArray(jsonValue)) {
+          if (!this.isValidURL(jsonValue)) {
+            let info = this.mapDetailsInfoModel(jsonKey, jsonValue);
+            (checkJsonKey == Constants.STRING_CREATED
+              || checkJsonKey == Constants.STRING_EDITED) ? this.arrayTime.push(info) : this.arraySingle.push(info);
+
+          } else {
+            if (checkJsonKey == Constants.STRING_URL) {            
+              this.itemURL = jsonValue;// to remove ?
+            } else {
+              imageDetailsArray.push(this.mapImageDetailsModel(jsonValue));
+              arraysToAdd.push(jsonKey, imageDetailsArray); 
+              this.arrayArray.push(arraysToAdd)
+            }
+          }
+        } else if(jsonValue.length > 0){
+          // When jsonValue = [] && has value, we create new array to display the information separately in new Div
+            for (let jsonArrayResults of jsonValue) {
+              imageDetailsArray.push(this.mapImageDetailsModel(jsonArrayResults));
+            }
+            arraysToAdd.push(jsonKey, imageDetailsArray);
+            this.arrayArray.push(arraysToAdd);
+        }
+      }
+    }, error=>{
+      console.log(error);
+    })
   }
 }

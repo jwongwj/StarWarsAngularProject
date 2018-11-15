@@ -12,3 +12,30 @@
     height: 50%;
     width: 50%;
 }
+
+.detailsArray{
+    text-align: center; 
+    font-size:14px;
+    border: 1px dotted white; 
+    border-radius: 5px; 
+    width:25%; 
+    height: 160px; 
+    display: inline-block; 
+    padding: 3px;
+    margin: 3px;
+    word-wrap: none;
+}
+
+.divHover :hover{
+    border-color: green; 
+    border-width: 3px;
+    background: lightskyblue;
+}
+
+.title{
+    text-align: center; 
+    font-weight: bold; 
+    border: 2px solid white; 
+    border-radius: 10px; 
+    width:80%; 
+}

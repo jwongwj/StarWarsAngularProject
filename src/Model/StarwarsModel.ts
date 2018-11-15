@@ -7,4 +7,5 @@ export interface ImageDetailsModel{
     url: {};
     imgSrc: string;
     name?:string;
+    newUrl?:string;
 }
