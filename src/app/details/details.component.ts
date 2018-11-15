@@ -86,6 +86,8 @@ export class DetailsComponent implements OnInit {
         name= value['title'];
       }
       imageDetails.name=name;
+    }, error=>{
+      console.log(error);
     })
     return imageDetails;
   }
