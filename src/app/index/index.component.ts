@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { BaseComponent } from '../base.component';
+import { PAGE_INDEX } from '../pageutils';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent extends BaseComponent implements OnInit {
 
   arr = [];
   list = [];
@@ -17,8 +19,10 @@ export class IndexComponent implements OnInit {
   property:string;
   isOpened:boolean=false;
   isError:boolean=false;
+  viewPage: string = PAGE_INDEX;
 
   constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { 
+    super(msg);
   }
 
   ngOnInit() {
@@ -28,6 +32,10 @@ export class IndexComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+
+  componentName(){
+    return PAGE_INDEX;
   }
   
   loadList(property) {

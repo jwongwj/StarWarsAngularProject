@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { URL_SWAPI } from './stringutils';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class ApiService {
 
   constructor(private http: HttpClient) { }
-  url:string="https://swapi.co/api/";
+  url:string= URL_SWAPI;
 
   /**
    * Get all Categories
