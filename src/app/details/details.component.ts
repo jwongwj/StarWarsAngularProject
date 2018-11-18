@@ -6,7 +6,7 @@ import { DetailsInfoModel, ImageDetailsModel } from '../StarwarsModel';
 import * as StringUtils from '../stringutils';
 import { BaseComponent } from '../base.component';
 import { PAGE_DETAILS } from '../pageutils';
-import { NgForm } from '@angular/forms';
+import { NgNavigatorShareService } from 'ng-navigator-share';
 
 @Component({
   selector: 'app-details',
@@ -15,7 +15,10 @@ import { NgForm } from '@angular/forms';
 })
 export class DetailsComponent extends BaseComponent implements OnInit {
 
-  constructor(private msgSvc: MessageService, private data: ApiService, private spinner: NgxSpinnerService) { super(); }
+  constructor(private msgSvc: MessageService, private data: ApiService, private spinner: NgxSpinnerService, private ngNavShareService : NgNavigatorShareService) { 
+    super(); 
+    this.ngNavigatorShareService = ngNavShareService;
+  }
   arraySingle: any[] = [];
   arrayArray: any[] = [];
   imgSrc: string;
@@ -23,6 +26,7 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   editInfo: boolean;
   buttonName: string;
   infoDetails: string = "";
+  ngNavigatorShareService: NgNavigatorShareService;
 
   ngOnInit() {
     this.getNewDetails(this.msgSvc.getURL());
@@ -100,9 +104,8 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   resetShowDetails() {
     this.arraySingle = [];
     this.arrayArray = [];
-    this.editInfo = true;
-    this.buttonName = "Edit";
     this.infoDetails = localStorage.getItem(this.msgSvc.getURL())
+    this.editDetails(true);
   }
 
   // Page Redirect
@@ -122,20 +125,33 @@ export class DetailsComponent extends BaseComponent implements OnInit {
       StringUtils.REGEX_QUERY_STRING +
       StringUtils.REGEX_FRAGMENT_LOCATER, 'i'
     );
-
     return pattern.test(str);
   }
 
-  editDetails(){
-    if(this.editInfo){
-      this.editInfo = false;
-      this.buttonName = "Save";
-    }
-    else{
+  editDetails(initialLoad? : boolean){
+    if(initialLoad == true){
       this.editInfo = true;
       this.buttonName = "Edit";
-      console.log("store -> " + this.infoDetails)
+    }else{
+      this.buttonName = (this.editInfo) ? "Save" : "Edit";
+      this.editInfo = this.editInfo != true; // Toggle button
       localStorage.setItem(this.msgSvc.getURL(), this.infoDetails);
     }
+  }
+
+  // https://github.com/ShankyTiwari/ng-navigator-share
+  // npm install --save ng-navigator-share
+  // Only for android
+  share() {
+    this.ngNavigatorShareService.share({
+      title: document.title,
+      // text: '',
+      url: this.msgSvc.getURL()
+    }).then( (response) => {
+      console.log(response);
+    })
+    .catch( (error) => {
+      console.log(error);
+    });
   }
 }

@@ -81,11 +81,10 @@ export class IndexComponent extends BaseComponent implements OnInit {
       this.isError=false;
       let arr=[];
       for(let item of value['results']){
-        var id;
-        let urlArr=item['url'].split('/');
-        id=urlArr[urlArr.length-2];
+        let urlArr = item['url'].split('/');
+        var id = urlArr[urlArr.length-2];
         var obj : ListModel = {
-          name:(item['name']!=null || item['name']!=undefined) ? item['name'] : item['title'],
+          name:(item['name'] != null) ? item['name'] : item['title'],
           id:id,
           url: item['url']
         }
