@@ -4,6 +4,7 @@ import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent } from '../base.component';
 import { PAGE_INDEX } from '../pageutils';
+import { ListModel } from '../starwarsmodel'
 
 @Component({
   selector: 'app-index',
@@ -21,9 +22,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
   isError:boolean=false;
   viewPage: string = PAGE_INDEX;
 
-  constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { 
-    super(msg);
-  }
+  constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { super(); }
 
   ngOnInit() {
     const index = this.data.getIndex().subscribe(value => {
@@ -80,21 +79,15 @@ export class IndexComponent extends BaseComponent implements OnInit {
     this.currentPage=page;
     const list = this.data.getList(property,page).subscribe(value=>{
       this.isError=false;
-      let items= value['results'];
       let arr=[];
-      for(let item of items){
-        var name:string;
+      for(let item of value['results']){
         var id;
-        if(item['name']!=null || item['name']!=undefined){
-         name=item['name'];
-        }else{
-          name=item['title'];
-        }
         let urlArr=item['url'].split('/');
         id=urlArr[urlArr.length-2];
-        var obj = {
-          name:name,
-          id:id
+        var obj : ListModel = {
+          name:(item['name']!=null || item['name']!=undefined) ? item['name'] : item['title'],
+          id:id,
+          url: item['url']
         }
         arr.push(obj);
       }
@@ -102,7 +95,6 @@ export class IndexComponent extends BaseComponent implements OnInit {
       if(this.totalPages==undefined){
         this.totalPages=Math.ceil(value["count"]/10);
       }
-      this.msg.setApiVariables(property, this.currentPage);
       list.unsubscribe();
       this.spinner.hide();
     },error=>{
@@ -114,8 +106,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
   }
 
   setDetails(value){
-    this.msg.setURLValue(value.name);
-    this.msg.setID(value.id);
+    this.msg.setURL(value.url);
     this.msg.setDetailsPage(true);
     this.msg.setIndexPage(false);
   }

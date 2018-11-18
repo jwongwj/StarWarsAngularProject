@@ -12,6 +12,13 @@
 
 </div>
 
+<div>
+    <form (ngSubmit)="editDetails()">
+        <button> {{ buttonName }}</button>
+        <textarea [disabled]="editInfo" [(ngModel)]="infoDetails" name="infoDetails"></textarea>
+    </form>
+</div>
+
 <div *ngFor="let detailed of arrayArray" class="others">
     <br>
     <label class="title">{{detailed[0] | titlecase }}</label>

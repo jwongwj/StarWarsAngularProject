@@ -33,17 +33,10 @@ export class ApiService {
 
   /**
    * Get Details of item selected
-   * @param list: from getList()
-   * @param details: list['results'][0]
+   * @param url : json['url'] of results
    * Default values can be retrieved from MessageService 
    * @example getDetails(this.msgSvc.property, this.msgSvc.value) <- Values should be set in getList().subscribe()
    */
-  getDetails(list, details) {
-    const params=new HttpParams().set('search',details)
-    return this.http.get(`${this.url}${list}/`,{params: params});
-  }
-
-  
   getURL(url){
     return this.http.get(url);
   }

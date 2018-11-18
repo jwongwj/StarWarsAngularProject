@@ -6,6 +6,7 @@ import { DetailsInfoModel, ImageDetailsModel } from '../StarwarsModel';
 import * as StringUtils from '../stringutils';
 import { BaseComponent } from '../base.component';
 import { PAGE_DETAILS } from '../pageutils';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-details',
@@ -14,15 +15,18 @@ import { PAGE_DETAILS } from '../pageutils';
 })
 export class DetailsComponent extends BaseComponent implements OnInit {
 
-  constructor(private msgSvc: MessageService, private data: ApiService, private spinner: NgxSpinnerService) { super(msgSvc); }
+  constructor(private msgSvc: MessageService, private data: ApiService, private spinner: NgxSpinnerService) { super(); }
   arraySingle: any[] = [];
   arrayArray: any[] = [];
   imgSrc: string;
   viewPage: string = PAGE_DETAILS;
+  editInfo: boolean;
+  buttonName: string;
+  infoDetails: string = "";
 
   ngOnInit() {
-    this.showDetails();
-    this.imgSrc = this.msgSvc.getImgSrc();
+    this.getNewDetails(this.msgSvc.getURL());
+
   }
 
   componentName() {
@@ -30,29 +34,40 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   }
 
   /**
-   * Initial Method to load Details Component
-   */
-  showDetails() {
-    this.resetShowDetails();
-    const list = this.data.getDetails(this.msgSvc.property, this.msgSvc.value).subscribe(value => {
-      list.unsubscribe();
-      let jsonResults = value['results'][0];
-      this.createComponent(jsonResults);
-    }, error => {
-      console.log(error);
-    })
-  }
-
-  /**
-   * Subsequent Methods to reload pages for referenced links
+   * Method to load Details
    */
   getNewDetails(url: string) {
+    this.msgSvc.setURL(url);
     this.resetShowDetails();
     this.imgSrc = this.msgSvc.getImgSrc(url);
-    const sub = this.data.getURL(url).subscribe(value => {
+    const sub = this.data.getURL(url).subscribe(jsonResults => {
       sub.unsubscribe();
-      let jsonResults = value;
-      this.createComponent(jsonResults);
+      for (var item of Object.entries(jsonResults)) {
+        let jsonKey = item[0].split('_').join(' ');
+        let jsonValue = item[1];
+        let checkJsonKey = jsonKey.toLocaleLowerCase().trim();
+        let arraysToAdd = [], imageDetailsArray = [];
+        if (!Array.isArray(jsonValue)) {
+          if (!this.isValidURL(jsonValue) && checkJsonKey != StringUtils.STRING_CREATED && checkJsonKey != StringUtils.STRING_EDITED) {
+            // Do not display Date Created / Edited, details here are displayed as labels
+            this.arraySingle.push(this.mapDetailsInfoModel(jsonKey, jsonValue));
+          
+          } else if (this.isValidURL(jsonValue) && checkJsonKey != StringUtils.STRING_URL && checkJsonKey != StringUtils.STRING_CREATED && checkJsonKey != StringUtils.STRING_EDITED) {
+            // Do not display Date Created / Edited / URL, URL must be valid, details here are displayed as images
+            imageDetailsArray.push(this.mapImageDetailsModel(jsonValue));
+            arraysToAdd.push(jsonKey, imageDetailsArray);
+            this.arrayArray.push(arraysToAdd)
+          }
+  
+        } else if (jsonValue.length > 0) {
+          // When jsonValue = [] && has value, we create new array to display the information separately in new Div
+          for (let jsonArrayResults of jsonValue) {
+            imageDetailsArray.push(this.mapImageDetailsModel(jsonArrayResults));
+          }
+          arraysToAdd.push(jsonKey, imageDetailsArray);
+          this.arrayArray.push(arraysToAdd);
+        }
+      }
     }, error => {
       console.log(error);
     })
@@ -85,12 +100,13 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   resetShowDetails() {
     this.arraySingle = [];
     this.arrayArray = [];
+    this.editInfo = true;
+    this.buttonName = "Edit";
+    this.infoDetails = localStorage.getItem(this.msgSvc.getURL())
   }
 
   // Page Redirect
   returnToList() {
-    // To-Do -> Create page routing PAGE_INDEX == something, return true. 
-    // Universal method for all pages - Every page requires abstract method of eg. PAGE_NAME="index"
     this.msgSvc.setIndexPage(true);
     this.msgSvc.setDetailsPage(false);
   }
@@ -110,32 +126,16 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     return pattern.test(str);
   }
 
-  createComponent(jsonResults) {
-    for (var item of Object.entries(jsonResults)) {
-      let jsonKey = item[0].split('_').join(' ');
-      let jsonValue = item[1];
-      let checkJsonKey = jsonKey.toLocaleLowerCase().trim();
-      let arraysToAdd = [], imageDetailsArray = [];
-      if (!Array.isArray(jsonValue)) {
-        if (!this.isValidURL(jsonValue) && checkJsonKey != StringUtils.STRING_CREATED && checkJsonKey != StringUtils.STRING_EDITED) {
-          // Do not display Date Created / Edited, details here are displayed as labels
-          this.arraySingle.push(this.mapDetailsInfoModel(jsonKey, jsonValue));
-        
-        } else if (this.isValidURL(jsonValue) && checkJsonKey != StringUtils.STRING_URL && checkJsonKey != StringUtils.STRING_CREATED && checkJsonKey != StringUtils.STRING_EDITED) {
-          // Do not display Date Created / Edited / URL, URL must be valid, details here are displayed as images
-          imageDetailsArray.push(this.mapImageDetailsModel(jsonValue));
-          arraysToAdd.push(jsonKey, imageDetailsArray);
-          this.arrayArray.push(arraysToAdd)
-        }
-
-      } else if (jsonValue.length > 0) {
-        // When jsonValue = [] && has value, we create new array to display the information separately in new Div
-        for (let jsonArrayResults of jsonValue) {
-          imageDetailsArray.push(this.mapImageDetailsModel(jsonArrayResults));
-        }
-        arraysToAdd.push(jsonKey, imageDetailsArray);
-        this.arrayArray.push(arraysToAdd);
-      }
+  editDetails(){
+    if(this.editInfo){
+      this.editInfo = false;
+      this.buttonName = "Save";
+    }
+    else{
+      this.editInfo = true;
+      this.buttonName = "Edit";
+      console.log("store -> " + this.infoDetails)
+      localStorage.setItem(this.msgSvc.getURL(), this.infoDetails);
     }
   }
 }
