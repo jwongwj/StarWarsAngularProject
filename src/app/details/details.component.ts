@@ -5,7 +5,6 @@ import { ApiService } from '../api.service';
 import { DetailsInfoModel, ImageDetailsModel } from '../StarwarsModel';
 import * as StringUtils from '../stringutils';
 import { BaseComponent } from '../base.component';
-import { PAGE_DETAILS } from '../pageutils';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 
 @Component({
@@ -22,7 +21,6 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   arraySingle: any[] = [];
   arrayArray: any[] = [];
   imgSrc: string;
-  viewPage: string = PAGE_DETAILS;
   editInfo: boolean;
   buttonName: string;
   infoDetails: string = "";
@@ -30,17 +28,13 @@ export class DetailsComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     this.getNewDetails(this.msgSvc.getURL());
-
-  }
-
-  componentName() {
-    return PAGE_DETAILS;
   }
 
   /**
    * Method to load Details
    */
   getNewDetails(url: string) {
+    this.spinner.show();
     this.msgSvc.setURL(url);
     this.resetShowDetails();
     this.imgSrc = this.msgSvc.getImgSrc(url);
@@ -72,8 +66,10 @@ export class DetailsComponent extends BaseComponent implements OnInit {
           this.arrayArray.push(arraysToAdd);
         }
       }
+      this.spinner.hide();
     }, error => {
       console.log(error);
+      this.spinner.hide();
     })
   }
 

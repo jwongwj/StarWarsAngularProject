@@ -10,15 +10,19 @@
 
 .footerdiv{
     background: black;
-    opacity: 0.7;
+    /* opacity: 0.7; */
     text-align: center;
     height: 65px;
     width: 100%;
     margin:0 auto;
     margin-top: 10px;
     margin-bottom: 0px;
-    position: absolute;
+    position: fixed;
     overflow: hidden;
+
+    bottom: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    z-index: 1;
 }
 
 .ftdiv{

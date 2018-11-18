@@ -3,7 +3,6 @@ import { ApiService } from '../api.service';
 import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent } from '../base.component';
-import { PAGE_INDEX } from '../pageutils';
 import { ListModel } from '../starwarsmodel'
 
 @Component({
@@ -20,7 +19,6 @@ export class IndexComponent extends BaseComponent implements OnInit {
   property:string;
   isOpened:boolean=false;
   isError:boolean=false;
-  viewPage: string = PAGE_INDEX;
 
   constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { super(); }
 
@@ -33,10 +31,6 @@ export class IndexComponent extends BaseComponent implements OnInit {
     });
   }
 
-  componentName(){
-    return PAGE_INDEX;
-  }
-  
   loadList(property) {
     if(property!=this.property){
       this.isOpened=true;

@@ -18,7 +18,6 @@ export class MessageService {
 
   // Get Image based on url path of Starwars API
   getImgSrc(url? :string){
-      // to get Image on Subsequent loads from referencing Details page
       let urlPath = url.substr(StringUtils.URL_SWAPI.length).slice(0, -1);
       var id = urlPath.split("/");
       if(id[0] == StringUtils.STRING_PEOPLE) urlPath = `${StringUtils.STRING_CHARACTERS}/${id[1]}`;

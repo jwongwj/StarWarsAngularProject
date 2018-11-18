@@ -10,14 +10,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { HttpErrorInterceptor } from './httperrorinterceptor';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
-import { RouterModule, Routes } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms'
-
-const appRoutes: Routes = [
-  { path: 'test', component: IndexComponent },
-  { path: 'test2', component: DetailsComponent },
-  // { path: '**', component: PageNotFoundComponent }
-];
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -36,6 +31,8 @@ const appRoutes: Routes = [
     NgxSpinnerModule,
     MatMenuModule,
     FormsModule,
+    MatCardModule,
+    MatFormFieldModule
     // RouterModule.forRoot(
     //   appRoutes,
     //   { enableTracing: true }
