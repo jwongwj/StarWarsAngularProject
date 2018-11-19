@@ -13,6 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms'
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -32,14 +33,15 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatMenuModule,
     FormsModule,
     MatCardModule,
-    MatFormFieldModule
+    MatFormFieldModule,
     // RouterModule.forRoot(
     //   appRoutes,
     //   { enableTracing: true }
     // )
   ],
   providers: [
-    {provide:HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi:true}
+    {provide:HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi:true},
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

@@ -9,14 +9,15 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
   url:string= URL_SWAPI;
-
+  newUrl: string;
+  page: string;
   /**
    * Get all Categories
    * @return HttpClient
    * @throws N/A
    */
   getIndex() {
-    return this.http.get(this.url);
+    return this.http.get(this.url)
   }
 
    /**
@@ -28,6 +29,8 @@ export class ApiService {
    */
   getList(list:string, page) {
     const params=new HttpParams().set('page',page)
+    this.newUrl = `${this.url}${list}`
+    this.page = page;
     return this.http.get(`${this.url}${list}/`,{params:params});
   }
 

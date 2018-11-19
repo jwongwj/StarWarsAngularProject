@@ -23,12 +23,21 @@ export class IndexComponent extends BaseComponent implements OnInit {
   constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { super(); }
 
   ngOnInit() {
-    const index = this.data.getIndex().subscribe(value => {
-      this.arr = Object.keys(value);
-      index.unsubscribe();
-    }, error => {
-      console.log(error);
-    });
+ //localStorage.clear()
+    if(localStorage.getItem(this.data.url) != null){
+      let arr1 = [];
+      arr1 = JSON.parse(localStorage.getItem(this.data.url));
+      this.arr = Object.keys(arr1);
+    }
+    else{
+      const index = this.data.getIndex().subscribe(value => {
+        this.arr = Object.keys(value);
+        localStorage.setItem(this.data.url, JSON.stringify(value));
+        index.unsubscribe();
+      }, error => {
+        console.log(error);
+      });      
+    }
   }
 
   loadList(property) {
@@ -71,31 +80,40 @@ export class IndexComponent extends BaseComponent implements OnInit {
     this.spinner.show();
     let cPage=this.currentPage;
     this.currentPage=page;
-    const list = this.data.getList(property,page).subscribe(value=>{
+    this.data.page = page;
+    if(localStorage.getItem(this.data.newUrl + '/' + this.data.page) != null){
       this.isError=false;
-      let arr=[];
-      for(let item of value['results']){
-        let urlArr = item['url'].split('/');
-        var id = urlArr[urlArr.length-2];
-        var obj : ListModel = {
-          name:(item['name'] != null) ? item['name'] : item['title'],
-          id:id,
-          url: item['url']
+      this.list = JSON.parse(localStorage.getItem(this.data.newUrl + '/' + this.data.page));
+      this.spinner.hide();
+    }else{
+      const list = this.data.getList(property,page).subscribe(value=>{
+        this.isError=false;
+        let arr=[];
+        for(let item of value['results']){
+          let urlArr = item['url'].split('/');
+          var id = urlArr[urlArr.length-2];
+          var obj : ListModel = {
+            name:(item['name'] != null) ? item['name'] : item['title'],
+            id:id,
+            url: item['url']
+          }
+          arr.push(obj);
         }
-        arr.push(obj);
-      }
-      this.list=arr;
-      if(this.totalPages==undefined){
-        this.totalPages=Math.ceil(value["count"]/10);
-      }
-      list.unsubscribe();
-      this.spinner.hide();
-    },error=>{
-      console.log(error);
-      this.isError=true;
-      this.currentPage=cPage;
-      this.spinner.hide();
-    })
+        this.list=arr;
+        localStorage.setItem(`${this.data.newUrl}/${page}`, JSON.stringify(arr))
+        if(this.totalPages==undefined){
+          this.totalPages=Math.ceil(value["count"]/10);
+        }
+        list.unsubscribe();
+        this.spinner.hide();
+      },error=>{
+        console.log(error);
+        this.isError=true;
+        this.currentPage=cPage;
+        this.data.page = cPage.toString();
+        this.spinner.hide();
+      })
+    }
   }
 
   setDetails(value){

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MessageService } from './message.service';
-import * as pages from './pageutils'
 
 @Component({
   selector: 'app-root',

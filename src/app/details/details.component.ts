@@ -38,39 +38,49 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     this.msgSvc.setURL(url);
     this.resetShowDetails();
     this.imgSrc = this.msgSvc.getImgSrc(url);
-    const sub = this.data.getURL(url).subscribe(jsonResults => {
-      sub.unsubscribe();
-      for (var item of Object.entries(jsonResults)) {
-        let jsonKey = item[0].split('_').join(' ');
-        let jsonValue = item[1];
-        let checkJsonKey = jsonKey.toLocaleLowerCase().trim();
-        let arraysToAdd = [], imageDetailsArray = [];
-        if (!Array.isArray(jsonValue)) {
-          if (!this.isValidURL(jsonValue) && checkJsonKey != StringUtils.STRING_CREATED && checkJsonKey != StringUtils.STRING_EDITED) {
-            // Do not display Date Created / Edited, details here are displayed as labels
-            this.arraySingle.push(this.mapDetailsInfoModel(jsonKey, jsonValue));
-          
-          } else if (this.isValidURL(jsonValue) && checkJsonKey != StringUtils.STRING_URL && checkJsonKey != StringUtils.STRING_CREATED && checkJsonKey != StringUtils.STRING_EDITED) {
-            // Do not display Date Created / Edited / URL, URL must be valid, details here are displayed as images
-            imageDetailsArray.push(this.mapImageDetailsModel(jsonValue));
-            arraysToAdd.push(jsonKey, imageDetailsArray);
-            this.arrayArray.push(arraysToAdd)
-          }
-  
-        } else if (jsonValue.length > 0) {
-          // When jsonValue = [] && has value, we create new array to display the information separately in new Div
-          for (let jsonArrayResults of jsonValue) {
-            imageDetailsArray.push(this.mapImageDetailsModel(jsonArrayResults));
-          }
+    if(localStorage.getItem(url) != null){
+      this.createComponent(JSON.stringify(localStorage.getItem(url)))
+      
+    }else{
+      const sub = this.data.getURL(url).subscribe(jsonResults => {
+        sub.unsubscribe();
+        this.createComponent(jsonResults);
+        localStorage.setItem(url, JSON.stringify(jsonResults));
+      }, error => {
+        console.log(error);
+        this.spinner.hide();
+      })
+    }
+    this.spinner.hide();
+  }
+
+  createComponent(jsonResults){
+    for (var item of Object.entries(jsonResults)) {
+      let jsonKey = item[0].split('_').join(' ');
+      let jsonValue = item[1];
+      let checkJsonKey = jsonKey.toLocaleLowerCase().trim();
+      let arraysToAdd = [], imageDetailsArray = [];
+      if (!Array.isArray(jsonValue)) {
+        if (!this.isValidURL(jsonValue) && checkJsonKey != StringUtils.STRING_CREATED && checkJsonKey != StringUtils.STRING_EDITED) {
+          // Do not display Date Created / Edited, details here are displayed as labels
+          this.arraySingle.push(this.mapDetailsInfoModel(jsonKey, jsonValue));
+        
+        } else if (this.isValidURL(jsonValue) && checkJsonKey != StringUtils.STRING_URL && checkJsonKey != StringUtils.STRING_CREATED && checkJsonKey != StringUtils.STRING_EDITED) {
+          // Do not display Date Created / Edited / URL, URL must be valid, details here are displayed as images
+          imageDetailsArray.push(this.mapImageDetailsModel(jsonValue));
           arraysToAdd.push(jsonKey, imageDetailsArray);
-          this.arrayArray.push(arraysToAdd);
+          this.arrayArray.push(arraysToAdd)
         }
+
+      } else if (jsonValue.length > 0) {
+        // When jsonValue = [] && has value, we create new array to display the information separately in new Div
+        for (let jsonArrayResults of jsonValue) {
+          imageDetailsArray.push(this.mapImageDetailsModel(jsonArrayResults));
+        }
+        arraysToAdd.push(jsonKey, imageDetailsArray);
+        this.arrayArray.push(arraysToAdd);
       }
-      this.spinner.hide();
-    }, error => {
-      console.log(error);
-      this.spinner.hide();
-    })
+    }
   }
 
   mapDetailsInfoModel(jsonKey, jsonValue): DetailsInfoModel {
@@ -100,7 +110,7 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   resetShowDetails() {
     this.arraySingle = [];
     this.arrayArray = [];
-    this.infoDetails = localStorage.getItem(this.msgSvc.getURL())
+    this.infoDetails = localStorage.getItem(this.msgSvc.getURL() + "/textbox")
     this.editDetails(true);
   }
 
@@ -131,7 +141,7 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     }else{
       this.buttonName = (this.editInfo) ? "Save" : "Edit";
       this.editInfo = this.editInfo != true; // Toggle button
-      localStorage.setItem(this.msgSvc.getURL(), this.infoDetails);
+      localStorage.setItem(this.msgSvc.getURL() + "/textbox", this.infoDetails);
     }
   }
 
