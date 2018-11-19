@@ -23,7 +23,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
   constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { super(); }
 
   ngOnInit() {
- //localStorage.clear()
+ localStorage.clear()
     if(localStorage.getItem(this.data.url) != null){
       let arr1 = [];
       arr1 = JSON.parse(localStorage.getItem(this.data.url));
