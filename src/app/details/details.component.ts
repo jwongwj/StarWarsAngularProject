@@ -39,11 +39,11 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     this.resetShowDetails();
     this.imgSrc = this.msgSvc.getImgSrc(url);
     if(localStorage.getItem(url) != null){
-      this.createComponent(JSON.parse(localStorage.getItem(url)), false)
+      this.createComponent(JSON.parse(localStorage.getItem(url)))
     }else{
       const sub = this.data.getURL(url).subscribe(jsonResults => {
         sub.unsubscribe();
-        this.createComponent(jsonResults, true);
+        this.createComponent(jsonResults);
         localStorage.setItem(url, JSON.stringify(jsonResults));
       }, error => {
         console.log(error);
@@ -53,9 +53,8 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     this.spinner.hide();
   }
 
-  createComponent(jsonResults, newItem: boolean){
-    var b = (newItem) ? Object.entries(jsonResults) : jsonResults;
-    for (var item of b) {
+  createComponent(jsonResults){
+    for (var item of Object.entries(jsonResults)) {
       let jsonKey = item[0].split('_').join(' ');
       let jsonValue = item[1];
       let checkJsonKey = jsonKey.toLocaleLowerCase().trim();
