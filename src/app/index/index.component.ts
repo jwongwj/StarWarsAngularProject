@@ -19,17 +19,14 @@ export class IndexComponent extends BaseComponent implements OnInit {
   property:string;
   isOpened:boolean=false;
   isError:boolean=false;
+  arrPage = {};
 
   constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { super(); }
 
   ngOnInit() {
- localStorage.clear()
     if(localStorage.getItem(this.data.url) != null){
-      let arr1 = [];
-      arr1 = JSON.parse(localStorage.getItem(this.data.url));
-      this.arr = Object.keys(arr1);
-    }
-    else{
+      this.arr = Object.keys(JSON.parse(localStorage.getItem(this.data.url)));
+    }else{
       const index = this.data.getIndex().subscribe(value => {
         this.arr = Object.keys(value);
         localStorage.setItem(this.data.url, JSON.stringify(value));
@@ -48,15 +45,11 @@ export class IndexComponent extends BaseComponent implements OnInit {
       this.totalPages=undefined;
       this.getList(property, 1)
     }else{
-      if(this.isOpened){
-        this.isOpened=false;
-      }else{
-        this.isOpened=true;
-        if(this.isError){
-          let page=this.currentPage||1;
-          this.getList(property,page);
-        }
+      if(this.isOpened && this.isError){
+        let page=this.currentPage||1;
+        this.getList(property,page);
       }
+      this.isOpened = this.isOpened != true;
     }
   }
 
@@ -81,13 +74,16 @@ export class IndexComponent extends BaseComponent implements OnInit {
     let cPage=this.currentPage;
     this.currentPage=page;
     this.data.page = page;
+    this.isError=false;
+    this.data.newUrl=`${this.data.url}${property}`;
     if(localStorage.getItem(this.data.newUrl + '/' + this.data.page) != null){
-      this.isError=false;
-      this.list = JSON.parse(localStorage.getItem(this.data.newUrl + '/' + this.data.page));
-      this.spinner.hide();
+      var data = JSON.parse(localStorage.getItem(this.data.newUrl + '/' + this.data.page))
+      this.list = data;
+      if(this.totalPages==undefined){
+        this.totalPages = parseInt(localStorage.getItem(`${this.data.newUrl}/${page}` + "page"));
+      }
     }else{
       const list = this.data.getList(property,page).subscribe(value=>{
-        this.isError=false;
         let arr=[];
         for(let item of value['results']){
           let urlArr = item['url'].split('/');
@@ -103,9 +99,9 @@ export class IndexComponent extends BaseComponent implements OnInit {
         localStorage.setItem(`${this.data.newUrl}/${page}`, JSON.stringify(arr))
         if(this.totalPages==undefined){
           this.totalPages=Math.ceil(value["count"]/10);
+          localStorage.setItem(`${this.data.newUrl}/${page}` + "page", this.totalPages.toString())
         }
         list.unsubscribe();
-        this.spinner.hide();
       },error=>{
         console.log(error);
         this.isError=true;
@@ -114,6 +110,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
         this.spinner.hide();
       })
     }
+    this.spinner.hide();
   }
 
   setDetails(value){
