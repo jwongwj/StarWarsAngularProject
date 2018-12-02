@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../api.service';
-import { DetailsInfoModel, ImageDetailsModel } from '../StarwarsModel';
+import { DetailsInfoModel, ImageDetailsModel } from '../starwarsmodel';
 import * as StringUtils from '../stringutils';
 import { BaseComponent } from '../base.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';

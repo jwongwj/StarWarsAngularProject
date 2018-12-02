@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { MatExpansionModule, MatButtonModule, MatMenuModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 const MODULES = [
     MatMenuModule,
@@ -9,6 +10,7 @@ const MODULES = [
     MatFormFieldModule,
     MatExpansionModule,
     MatButtonModule,
+    MatToolbarModule
 ]
 
 @NgModule({

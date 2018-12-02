@@ -16,22 +16,63 @@
     background: lightyellow;
     color: maroon;
     border-radius: 25px;
+    height: 61px;
+}
+
+.customNav{
+    background: white;
+    color: white;
+}
+
+.customIcon{
+    height: 100px;
+    width: 150px;
 }
 /* End of Nav Bar */
 
 /* Header */
 .Headerdiv{
     text-align:center;
-    padding-top: 65px;
+    /* padding-top: 65px; */
 }
 
 .HeaderStarWars{
-    width: 50%;
-    height: 200px;
+    width: 30%;
+    height: 150px;
     opacity: 0.7;
+}
+
+.fulldiv{
+    width:100%;
+    opacity: 0.7;
+    background: black;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    z-index: 1;
 }
 /* End of Header */
 
 .custom-toggler .navbar-toggler-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-   }
+}
+
+.starwarsIcon{
+    width: 20%;
+    height: 150px;
+    top: 0; /* Position the navbar at the top of the page */
+    z-index: 1;
+    display: block;
+    margin: auto;
+}
+
+/* For phones and Tablets */
+@media screen and (max-width: 800px){
+    .starwarsIcon{
+        width: 40%;
+        height: 150px;
+        top: 0; /* Position the navbar at the top of the page */
+        z-index: 1;
+        display: block;
+        margin: auto;
+    }
+}
