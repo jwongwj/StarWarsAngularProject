@@ -1,7 +1,25 @@
-
-    <!-- Footer  -->
-    <div class="footerdiv">
+<!-- Footer  -->
+<!-- <div class="footerdiv">
       <div class="ftdiv">
           <div class="creditstext">Made By: <a href="https://github.com/EstHoon">Esther Hoon</a> & <a href="https://github.com/jwongwj">Jayden Wong</a><div class="footertext">Institute of System Science - Graduate Diploma in System Analysis Batch 46</div></div>
       </div>
+    </div> -->
+
+<div class="showDiv" (mouseenter)="mouseHovering()">
+    <img class="infoImg" src="../../assets/Images/icons8-info-64.png">
+</div>
+
+<div class="creditsDetails" [hidden]="checkCreditsImg()" (mouseleave)="mouseLeft()">
+    <div class="createdBy">
+        <h5>Created By</h5>
     </div>
+    <div>
+        <img class="jayden" src="../../assets/Images/Star_wars_longshadow-03.png">
+        <img class="esther" src="../../assets/Images/Star_wars_longshadow-06.png">
+    </div>
+    <div class="creditsName">
+        <div class="cnJayden"><a href="https://github.com/jwongwj">Jayden</a></div>
+        <div class="cnEsther"><a href="https://github.com/esthoon">Esther</a></div>
+        <div class="cnSchool">NUS Graduate Diploma in System Analysis</div>
+    </div>
+</div>

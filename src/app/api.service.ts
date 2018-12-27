@@ -9,14 +9,15 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
   url:string= URL_SWAPI;
-
+  newUrl: string;
+  page: string;
   /**
    * Get all Categories
    * @return HttpClient
    * @throws N/A
    */
   getIndex() {
-    return this.http.get(this.url);
+    return this.http.get(this.url)
   }
 
    /**
@@ -28,22 +29,17 @@ export class ApiService {
    */
   getList(list:string, page) {
     const params=new HttpParams().set('page',page)
+    this.newUrl = `${this.url}${list}`
+    this.page = page;
     return this.http.get(`${this.url}${list}/`,{params:params});
   }
 
   /**
    * Get Details of item selected
-   * @param list: from getList()
-   * @param details: list['results'][0]
+   * @param url : json['url'] of results
    * Default values can be retrieved from MessageService 
    * @example getDetails(this.msgSvc.property, this.msgSvc.value) <- Values should be set in getList().subscribe()
    */
-  getDetails(list, details) {
-    const params=new HttpParams().set('search',details)
-    return this.http.get(`${this.url}${list}/`,{params: params});
-  }
-
-  
   getURL(url){
     return this.http.get(url);
   }

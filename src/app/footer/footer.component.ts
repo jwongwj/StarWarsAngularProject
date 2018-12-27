@@ -8,8 +8,20 @@ import { Component, OnInit } from '@angular/core';
 export class FooterComponent implements OnInit {
 
   constructor() { }
+  isHovering: boolean = false;
 
   ngOnInit() {
   }
 
+  mouseHovering(){
+    this.isHovering = true;
+  }
+
+  mouseLeft(){
+    this.isHovering = false;
+  }
+
+  checkCreditsImg(){
+    return !this.isHovering;
+  }
 }

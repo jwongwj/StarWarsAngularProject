@@ -13,23 +13,33 @@
     width: 50%;
 }
 
+/* .perCategory{
+    border: 2px solid white; 
+    border-radius: 5px; 
+    margin: 10px;
+    padding: 5px;
+} */
+
 .detailsArray{
-    text-align: center; 
     font-size:14px;
     border: 1px dotted white; 
     border-radius: 5px; 
     width:25%; 
-    height: 160px; 
-    display: inline-block; 
+    height: 100%; 
+    display: inline-block;
+    vertical-align: top;
     padding: 3px;
     margin: 3px;
-    word-wrap: none;
 }
 
 .divHover :hover{
     border-color: green; 
     border-width: 3px;
     background: lightskyblue;
+}
+
+.labelArray{
+    height: 100px;
 }
 
 .title{

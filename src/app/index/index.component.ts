@@ -3,7 +3,7 @@ import { ApiService } from '../api.service';
 import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent } from '../base.component';
-import { PAGE_INDEX } from '../pageutils';
+import { ListModel } from '../starwarsmodel'
 
 @Component({
   selector: 'app-index',
@@ -19,25 +19,24 @@ export class IndexComponent extends BaseComponent implements OnInit {
   property:string;
   isOpened:boolean=false;
   isError:boolean=false;
-  viewPage: string = PAGE_INDEX;
+  arrPage = {};
 
-  constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { 
-    super(msg);
-  }
+  constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { super(); }
 
   ngOnInit() {
-    const index = this.data.getIndex().subscribe(value => {
-      this.arr = Object.keys(value);
-      index.unsubscribe();
-    }, error => {
-      console.log(error);
-    });
+    if(localStorage.getItem(this.data.url) != null){
+      this.arr = Object.keys(JSON.parse(localStorage.getItem(this.data.url)));
+    }else{
+      const index = this.data.getIndex().subscribe(value => {
+        this.arr = Object.keys(value);
+        localStorage.setItem(this.data.url, JSON.stringify(value));
+        index.unsubscribe();
+      }, error => {
+        console.log(error);
+      });      
+    }
   }
 
-  componentName(){
-    return PAGE_INDEX;
-  }
-  
   loadList(property) {
     if(property!=this.property){
       this.isOpened=true;
@@ -46,15 +45,11 @@ export class IndexComponent extends BaseComponent implements OnInit {
       this.totalPages=undefined;
       this.getList(property, 1)
     }else{
-      if(this.isOpened){
-        this.isOpened=false;
-      }else{
-        this.isOpened=true;
-        if(this.isError){
-          let page=this.currentPage||1;
-          this.getList(property,page);
-        }
+      if(this.isOpened && this.isError){
+        let page=this.currentPage||1;
+        this.getList(property,page);
       }
+      this.isOpened = this.isOpened != true;
     }
   }
 
@@ -78,44 +73,48 @@ export class IndexComponent extends BaseComponent implements OnInit {
     this.spinner.show();
     let cPage=this.currentPage;
     this.currentPage=page;
-    const list = this.data.getList(property,page).subscribe(value=>{
-      this.isError=false;
-      let items= value['results'];
-      let arr=[];
-      for(let item of items){
-        var name:string;
-        var id;
-        if(item['name']!=null || item['name']!=undefined){
-         name=item['name'];
-        }else{
-          name=item['title'];
-        }
-        let urlArr=item['url'].split('/');
-        id=urlArr[urlArr.length-2];
-        var obj = {
-          name:name,
-          id:id
-        }
-        arr.push(obj);
-      }
-      this.list=arr;
+    this.data.page = page;
+    this.isError=false;
+    this.data.newUrl=`${this.data.url}${property}`;
+    if(localStorage.getItem(this.data.newUrl + '/' + this.data.page) != null){
+      var data = JSON.parse(localStorage.getItem(this.data.newUrl + '/' + this.data.page))
+      this.list = data;
       if(this.totalPages==undefined){
-        this.totalPages=Math.ceil(value["count"]/10);
+        this.totalPages = parseInt(localStorage.getItem(`${this.data.newUrl}/${page}` + "page"));
       }
-      this.msg.setApiVariables(property, this.currentPage);
-      list.unsubscribe();
-      this.spinner.hide();
-    },error=>{
-      console.log(error);
-      this.isError=true;
-      this.currentPage=cPage;
-      this.spinner.hide();
-    })
+    }else{
+      const list = this.data.getList(property,page).subscribe(value=>{
+        let arr=[];
+        for(let item of value['results']){
+          let urlArr = item['url'].split('/');
+          var id = urlArr[urlArr.length-2];
+          var obj : ListModel = {
+            name:(item['name'] != null) ? item['name'] : item['title'],
+            id:id,
+            url: item['url']
+          }
+          arr.push(obj);
+        }
+        this.list=arr;
+        localStorage.setItem(`${this.data.newUrl}/${page}`, JSON.stringify(arr))
+        if(this.totalPages==undefined){
+          this.totalPages=Math.ceil(value["count"]/10);
+          localStorage.setItem(`${this.data.newUrl}/${page}` + "page", this.totalPages.toString())
+        }
+        list.unsubscribe();
+      },error=>{
+        console.log(error);
+        this.isError=true;
+        this.currentPage=cPage;
+        this.data.page = cPage.toString();
+        this.spinner.hide();
+      })
+    }
+    this.spinner.hide();
   }
 
   setDetails(value){
-    this.msg.setURLValue(value.name);
-    this.msg.setID(value.id);
+    this.msg.setURL(value.url);
     this.msg.setDetailsPage(true);
     this.msg.setIndexPage(false);
   }

@@ -1,6 +1,16 @@
+<div>
+    <mat-panel-description>
+        <ngx-spinner
+        bdColor = "rgba(0,0,0,0.50)"
+        size = "default"
+        color = "#fffbfb"
+        type = "ball-atom"
+        ></ngx-spinner>
+  </mat-panel-description>
+</div>
 <div *ngFor="let labelItems of arraySingle; let i=index">
     <div *ngIf="i == 0">
-        <h2>{{ labelItems.value }}</h2>
+        <div>{{ labelItems.value }}</div>
         <div>
             <img src="{{imgSrc}}" onerror="this.src='../../src/assets/Images/NoImage.jpg'" class="picture">
         </div>
@@ -12,18 +22,31 @@
 
 </div>
 
+<div>
+    <form (ngSubmit)="editDetails()">
+        <button> {{ buttonName }}</button>
+        <textarea [disabled]="editInfo" [(ngModel)]="infoDetails" name="infoDetails"></textarea>
+    </form>
+</div>
+
 <div *ngFor="let detailed of arrayArray" class="others">
-    <br>
-    <label class="title">{{detailed[0] | titlecase }}</label>
-    <br>
-    <div *ngFor="let images of detailed[1]" class="detailsArray">
-        <div (click)="getNewDetails(images.newUrl)" class="divHover">
-            <div class="imageArray">
-                <img src='{{images.imgSrc}}' alt="Avatar" onerror="this.src='../../src/assets/Images/NoImage.jpg'">
+    <div class="perCategory">
+            <br>
+            <label class="title">{{detailed[0] | titlecase }}</label>
+            <br>
+            <div *ngFor="let images of detailed[1]" class="detailsArray">
+                <div (click)="getNewDetails(images.newUrl)" class="divHover">
+                    <div class="imageArray">
+                        <img src='{{images.imgSrc}}' alt="Avatar" onerror="this.src='../../src/assets/Images/NoImage.jpg'">
+                    </div>
+                    <div class="labelArray">
+                        {{images.name}}
+                    </div>
+                </div>
             </div>
-            <div class="labelArray">
-                {{images.name}}
-            </div>
-        </div>
     </div>
+</div>
+
+<div>
+    <button (click)="share()">Share</button>
 </div>

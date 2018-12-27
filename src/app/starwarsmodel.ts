@@ -9,3 +9,9 @@ export interface ImageDetailsModel{
     name?:string;
     newUrl?:string;
 }
+
+export interface ListModel{
+    name: string;
+    id: number;
+    url: {};
+}
