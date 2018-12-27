@@ -20,10 +20,5 @@ export class AppComponent {
   displayDetails(): boolean{
     return this.msgSvc.getDetailsPage();
   }
-
-  returnToList(){
-    this.msgSvc.setIndexPage(true);
-    this.msgSvc.setDetailsPage(false);
-  }
 }
 

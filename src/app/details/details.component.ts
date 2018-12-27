@@ -38,8 +38,9 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     this.msgSvc.setURL(url);
     this.resetShowDetails();
     this.imgSrc = this.msgSvc.getImgSrc(url);
-    if(localStorage.getItem(url) != null){
-      this.createComponent(JSON.parse(localStorage.getItem(url)))
+    let localstorageresult = localStorage.getItem(url);
+    if(localstorageresult != null){
+      this.createComponent(JSON.parse(localstorageresult))
     }else{
       const sub = this.data.getURL(url).subscribe(jsonResults => {
         sub.unsubscribe();

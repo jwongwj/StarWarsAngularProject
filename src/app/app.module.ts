@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms'
 import { CookieService } from 'ngx-cookie-service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { MaterialModule } from './material.module'
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
