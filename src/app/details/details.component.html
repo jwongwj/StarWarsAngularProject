@@ -36,7 +36,7 @@
                         <textarea [disabled]="editInfo" [(ngModel)]="infoDetails" name="infoDetails"></textarea>
                     </tr>
                     <tr>
-                        <button> {{ buttonName }}</button>
+                        <button mat-button color='accent'> {{ buttonName }}</button>
                     </tr>
                 </form>
             </div>
@@ -65,10 +65,10 @@
 <table class="tableCss">
     <tr>
         <td>
-            <button (click)="share()">Share</button>
+            <button mat-raised-button color='primary' (click)="share()">Share</button>
         </td>
         <td>
-            <button (click)="returnToList()">Back</button>
+            <button mat-raised-button color='accent' (click)="returnToList()">Back</button>
         </td>
     </tr>
 </table>

@@ -82,8 +82,13 @@
 
 .editForm button{
     width: 100%;
+    font-weight: bold;
 }
 
 .editForm{
     display: inline-block;
+}
+
+.tableCss button{
+    font-weight:bold;
 }
