@@ -7,6 +7,7 @@ import * as StringUtils from '../stringutils';
 import { BaseComponent } from '../base.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
 
+
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -25,9 +26,12 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   buttonName: string;
   infoDetails: string = "";
   ngNavigatorShareService: NgNavigatorShareService;
+  innerWidth;
 
   ngOnInit() {
     this.getNewDetails(this.msgSvc.getURL());
+    this.innerWidth=window.innerWidth;
+    console.log(this.innerWidth);
   }
 
   /**
@@ -159,5 +163,8 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     .catch( (error) => {
       console.log(error);
     });
+  }
+  onResize(event){
+    this.innerWidth=event.target.innerWidth; // window width
   }
 }

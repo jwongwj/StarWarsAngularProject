@@ -1,19 +1,16 @@
-<div>
-    <mat-panel-description>
-        <ngx-spinner
-        bdColor = "rgba(0,0,0,0.50)"
-        size = "default"
-        color = "#fffbfb"
-        type = "ball-atom"
-        ></ngx-spinner>
-  </mat-panel-description>
-</div>
-<div class='imageTop' *ngIf='arraySingle[1]!=undefined && arraySingle[1].key=="episode id"'>
+<div (window:resize)="onResize($event)">
+    <ngx-spinner
+    bdColor = "rgba(0,0,0,0.50)"
+    size = "default"
+    color = "#fffbfb"
+    type = "ball-atom"
+    ></ngx-spinner>
+<div class='imageTop' *ngIf='(arraySingle[1]!=undefined && arraySingle[1].key=="episode id")||this.innerWidth<1100'>
     <img src="{{imgSrc}}" onerror="this.src='../../src/assets/Images/NoImage.jpg'" class="picture">
 </div>
-<table>
+<table class='tableCss'>
     <tr>
-        <td style="width:50%" *ngIf='arraySingle[1]!=undefined &&arraySingle[1].key!="episode id"'>
+        <td style="width:50%" *ngIf='arraySingle[1]!=undefined &&arraySingle[1].key!="episode id"&&this.innerWidth>=1100'>
             <div class='imageTop'>
                 <img src="{{imgSrc}}" onerror="this.src='../../src/assets/Images/NoImage.jpg'" class="picture">
             </div>
@@ -75,3 +72,4 @@
         </td>
     </tr>
 </table>
+</div>
