@@ -1,0 +1,9 @@
+{
+    "name": "Star Wars Infopedia",
+    "short_name": "StarWars",
+    "theme_color": "#000000",
+    "background_color": "#d2d2d2",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/home"
+  }
