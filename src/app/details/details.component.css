@@ -83,6 +83,8 @@
 .editForm button{
     width: 100%;
     font-weight: bold;
+    outline:5px auto;
+    outline-color: dodgerblue;
 }
 
 .editForm{
