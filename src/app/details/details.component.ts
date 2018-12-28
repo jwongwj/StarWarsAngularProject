@@ -15,7 +15,7 @@ import { NgNavigatorShareService } from 'ng-navigator-share';
 })
 export class DetailsComponent extends BaseComponent implements OnInit {
 
-  constructor(private msgSvc: MessageService, private data: ApiService, private spinner: NgxSpinnerService, private ngNavShareService : NgNavigatorShareService) { 
+  constructor(private msgSvc: MessageService, private data: ApiService, public spinner: NgxSpinnerService, private ngNavShareService : NgNavigatorShareService) { 
     super(); 
     this.ngNavigatorShareService = ngNavShareService;
   }
@@ -31,7 +31,6 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.getNewDetails(this.msgSvc.getURL());
     this.innerWidth=window.innerWidth;
-    console.log(this.innerWidth);
   }
 
   /**
@@ -45,17 +44,18 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     let localstorageresult = localStorage.getItem(url);
     if(localstorageresult != null){
       this.createComponent(JSON.parse(localstorageresult))
+      this.spinner.hide();
     }else{
       const sub = this.data.getURL(url).subscribe(jsonResults => {
         sub.unsubscribe();
         this.createComponent(jsonResults);
         localStorage.setItem(url, JSON.stringify(jsonResults));
+        this.spinner.hide();
       }, error => {
         console.log(error);
         this.spinner.hide();
       })
     }
-    this.spinner.hide();
   }
 
   createComponent(jsonResults){

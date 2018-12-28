@@ -21,7 +21,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
   isError:boolean=false;
   arrPage = {};
 
-  constructor(private data: ApiService, private msg: MessageService, private spinner:NgxSpinnerService) { super(); }
+  constructor(private data: ApiService, private msg: MessageService, public spinner:NgxSpinnerService) { super(); }
 
   ngOnInit() {
     if(localStorage.getItem(this.data.url) != null){
@@ -70,7 +70,6 @@ export class IndexComponent extends BaseComponent implements OnInit {
   }
 
   getList(property, page){
-    this.spinner.show();
     let cPage=this.currentPage;
     this.currentPage=page;
     this.data.page = page;
@@ -83,6 +82,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
         this.totalPages = parseInt(localStorage.getItem(`${this.data.newUrl}/${page}` + "page"));
       }
     }else{
+      this.spinner.show();
       const list = this.data.getList(property,page).subscribe(value=>{
         let arr=[];
         for(let item of value['results']){
@@ -102,6 +102,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
           localStorage.setItem(`${this.data.newUrl}/${page}` + "page", this.totalPages.toString())
         }
         list.unsubscribe();
+        this.spinner.hide();
       },error=>{
         console.log(error);
         this.isError=true;
@@ -110,7 +111,6 @@ export class IndexComponent extends BaseComponent implements OnInit {
         this.spinner.hide();
       })
     }
-    this.spinner.hide();
   }
 
   setDetails(value){
