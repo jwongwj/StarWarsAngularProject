@@ -48,6 +48,8 @@
     height: 50px;
     display: inline-block 0 1 auto;
     font-weight: bold;
+    font-size:small;
+    font-size:calc(8px + (14 - 8) * (100vw - 100px) / (1440 - 100));
 }
 
 .title{
