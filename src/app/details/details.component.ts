@@ -66,8 +66,7 @@ export class DetailsComponent extends BaseComponent implements OnInit {
 
   redirectDetails(url:string){
     let property = this.msgSvc.returnParams(url);
-    this.router.navigate(['/details', property[0], property[1]]).then(value=>{
-      console.log(value);
+    this.router.navigate(['/details', property[0], property[1]]).then(()=>{
       this.getNewDetails(url);
     },error=>{
       console.log(error);
