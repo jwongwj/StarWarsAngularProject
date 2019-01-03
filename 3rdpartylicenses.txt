@@ -341,9 +341,6 @@ MIT
 ng-navigator-share
 MIT
 
-@angular/service-worker
-MIT
-
 ngx-cookie-service
 MIT
 
