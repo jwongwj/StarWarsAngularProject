@@ -2,8 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { IndexComponent } from './index/index.component';
-import { DetailsComponent } from './details/details.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { HttpErrorInterceptor } from './httperrorinterceptor';
@@ -14,14 +12,14 @@ import { CookieService } from 'ngx-cookie-service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MaterialModule } from './material.module';
+import { AppRoutingModule, routingComponents } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    IndexComponent,
-    DetailsComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    routingComponents
   ],
   imports: [
     BrowserModule,
@@ -30,7 +28,8 @@ import { MaterialModule } from './material.module';
     NgxSpinnerModule,
     FormsModule,
     MaterialModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production})
+    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    AppRoutingModule
     // RouterModule.forRoot(
     //   appRoutes,
     //   { enableTracing: true }

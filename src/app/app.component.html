@@ -5,14 +5,10 @@
     <!-- Main Div -->
     <div class="detailsdiv">
         <div class="contentdiv">
-            <div [hidden]="displayDetails()">
-                <app-index></app-index>
-            </div>
-            <div *ngIf="displayDetails()">
-                <app-details></app-details>
-            </div>
+            <router-outlet></router-outlet>
         </div>
     </div>
+
 
     <!-- Footer -->
     <app-footer></app-footer>

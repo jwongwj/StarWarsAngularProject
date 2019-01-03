@@ -4,6 +4,7 @@ import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent } from '../base.component';
 import { ListModel } from '../starwarsmodel'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-index',
@@ -21,7 +22,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
   isError:boolean=false;
   arrPage = {};
 
-  constructor(private data: ApiService, private msg: MessageService, public spinner:NgxSpinnerService) { super(); }
+  constructor(private data: ApiService, private msg: MessageService, public spinner:NgxSpinnerService, private router: Router) { super(); }
 
   ngOnInit() {
     if(localStorage.getItem(this.data.url) != null){
@@ -117,5 +118,7 @@ export class IndexComponent extends BaseComponent implements OnInit {
     this.msg.setURL(value.url);
     this.msg.setDetailsPage(true);
     this.msg.setIndexPage(false);
+    let id=value.id;
+    this.router.navigate(['/details', this.property, id]);
   }
 }

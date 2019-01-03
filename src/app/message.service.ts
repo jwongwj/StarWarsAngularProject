@@ -43,4 +43,14 @@ export class MessageService {
   setDetailsPage(bool : boolean){
     this.detailsPage = bool;
   }
+  
+  setDetailsURl(property, id){
+    this.url = `${StringUtils.URL_SWAPI}${property}/${id}/`
+  }
+
+  returnParams(url:string){
+    let urlPath = url.substr(StringUtils.URL_SWAPI.length).slice(0, -1);
+    var id = urlPath.split("/");
+    return id;
+  }
 }

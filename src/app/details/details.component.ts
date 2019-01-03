@@ -6,6 +6,7 @@ import { DetailsInfoModel, ImageDetailsModel } from '../starwarsmodel';
 import * as StringUtils from '../stringutils';
 import { BaseComponent } from '../base.component';
 import { NgNavigatorShareService } from 'ng-navigator-share';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { NgNavigatorShareService } from 'ng-navigator-share';
 })
 export class DetailsComponent extends BaseComponent implements OnInit {
 
-  constructor(private msgSvc: MessageService, private data: ApiService, public spinner: NgxSpinnerService, private ngNavShareService : NgNavigatorShareService) { 
+  constructor(private msgSvc: MessageService, private data: ApiService, public spinner: NgxSpinnerService, private ngNavShareService : NgNavigatorShareService, private _route: ActivatedRoute, private router: Router) { 
     super(); 
     this.ngNavigatorShareService = ngNavShareService;
   }
@@ -27,10 +28,15 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   infoDetails: string = "";
   ngNavigatorShareService: NgNavigatorShareService;
   innerWidth;
+  id;
+  property;
 
   ngOnInit() {
-    this.getNewDetails(this.msgSvc.getURL());
     this.innerWidth=window.innerWidth;
+    this.property = this._route.snapshot.params['property'];
+    this.id = this._route.snapshot.params['id'];
+    this.msgSvc.setDetailsURl(this.property,this.id);
+    this.getNewDetails(this.msgSvc.getURL());
   }
 
   /**
@@ -56,6 +62,12 @@ export class DetailsComponent extends BaseComponent implements OnInit {
         this.spinner.hide();
       })
     }
+  }
+
+  redirectDetails(url:string){
+    let property = this.msgSvc.returnParams(url);
+    this.router.navigate(['/details', property[0], property[1]]);
+    this.getNewDetails(url);
   }
 
   createComponent(jsonResults){
@@ -122,6 +134,7 @@ export class DetailsComponent extends BaseComponent implements OnInit {
   returnToList() {
     this.msgSvc.setIndexPage(true);
     this.msgSvc.setDetailsPage(false);
+    this.router.navigate(['']);
   }
 
   // Check URL pattern
@@ -156,7 +169,8 @@ export class DetailsComponent extends BaseComponent implements OnInit {
     this.ngNavigatorShareService.share({
       title: document.title,
       // text: '',
-      url: this.msgSvc.getURL()
+      //url: this.msgSvc.getURL()
+      url: `${StringUtils.URL_LINK}${this.property}/${this.id}`
     }).then( (response) => {
       console.log(response);
     })

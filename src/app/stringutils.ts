@@ -13,6 +13,7 @@ export const MESSAGES_SAMPLE_AUTO_GENERATED : string = 'This is an auto-generate
 // URL Paths
 export const URL_SWAPI : string = 'https://swapi.co/api/';
 export const URL_STARWARS_VG : string = 'https://starwars-visualguide.com/assets/img/';
+export const URL_LINK: string = 'https://jwongwj.github.io/StarWarsAngularProject/';
 
 // Regex [Cannot be const]
 export var REGEX_PROTOCOL : string = '^((https?:)?\\/\\/)?';

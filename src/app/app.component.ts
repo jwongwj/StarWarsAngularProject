@@ -9,15 +9,15 @@ import { MessageService } from './message.service';
 export class AppComponent {
   title = 'AngularProject';
 
-  constructor(private msgSvc : MessageService){
+  constructor(private msgSvc: MessageService) {
     msgSvc.setIndexPage(true);
   }
 
-  displayIndex(): boolean{
+  displayIndex(): boolean {
     return this.msgSvc.getIndexPage();
   }
 
-  displayDetails(): boolean{
+  displayDetails(): boolean {
     return this.msgSvc.getDetailsPage();
   }
 }

@@ -21,10 +21,10 @@
                     <div class="header">{{ labelItems.value }}</div>
                 </div>
             
-                <div *ngIf="i > 0">
+                <div *ngIf="i > 0 && labelItems.value!=null">
                     <label>
                         {{labelItems.key | titlecase}}: 
-                        {{ labelItems.value.toString() | titlecase }}  
+                        {{ labelItems.value.toString()  | titlecase }}  
                     </label>
                 </div>
             </div>
@@ -50,7 +50,7 @@
             <label class="title">{{detailed[0] | titlecase }}</label>
             <br>
             <div *ngFor="let images of detailed[1]" class="detailsArray">
-                <div (click)="getNewDetails(images.newUrl)">
+                <div (click)="redirectDetails(images.newUrl)">
                     <div class="imageArray">
                         <img src='{{images.imgSrc}}' alt="Avatar" onerror="this.src='assets/NoImage.jpg'">
                     </div>
