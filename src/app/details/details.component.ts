@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { MessageService } from '../message.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../api.service';
@@ -16,7 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DetailsComponent extends BaseComponent implements OnInit {
 
-  constructor(private msgSvc: MessageService, private data: ApiService, public spinner: NgxSpinnerService, private ngNavShareService : NgNavigatorShareService, private _route: ActivatedRoute, private router: Router) { 
+  constructor(private msgSvc: MessageService, private data: ApiService, public spinner: NgxSpinnerService, private ngNavShareService : NgNavigatorShareService, private _route: ActivatedRoute, private router: Router, private _ngZone:NgZone) { 
     super(); 
     this.ngNavigatorShareService = ngNavShareService;
   }
@@ -66,8 +66,12 @@ export class DetailsComponent extends BaseComponent implements OnInit {
 
   redirectDetails(url:string){
     let property = this.msgSvc.returnParams(url);
-    this.router.navigate(['/details', property[0], property[1]]);
-    this.getNewDetails(url);
+    this.router.navigate(['/details', property[0], property[1]]).then(value=>{
+      console.log(value);
+      this.getNewDetails(url);
+    },error=>{
+      console.log(error);
+    })
   }
 
   createComponent(jsonResults){
