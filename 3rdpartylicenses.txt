@@ -269,13 +269,13 @@ MIT
 @angular/common
 MIT
 
-ngx-spinner
-MIT
-
 @angular/platform-browser
 MIT
 
-@angular/forms
+@angular/router
+MIT
+
+@angular/animations
 MIT
 
 @angular/cdk
@@ -328,15 +328,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-@angular/animations
+@angular/material/expansion
+
+ngx-spinner
 MIT
 
 @angular/material/button
 
-ng-navigator-share
+@angular/forms
 MIT
 
-@angular/material/expansion
+ng-navigator-share
+MIT
 
 @angular/service-worker
 MIT
