@@ -7,9 +7,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { HttpErrorInterceptor } from './httperrorinterceptor';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
-import { ServiceWorkerModule } from '@angular/service-worker';
+// import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
@@ -28,7 +28,7 @@ import { AppRoutingModule, routingComponents } from './app-routing.module';
     NgxSpinnerModule,
     FormsModule,
     MaterialModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
+    // ServiceWorkerModule.register('/ngsw-worker.js', {enabled: environment.production}),
     AppRoutingModule
     // RouterModule.forRoot(
     //   appRoutes,
@@ -36,7 +36,7 @@ import { AppRoutingModule, routingComponents } from './app-routing.module';
     // )
   ],
   providers: [
-    {provide:HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi:true},
+    {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
     CookieService
   ],
   bootstrap: [AppComponent]

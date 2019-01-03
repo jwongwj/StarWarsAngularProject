@@ -1,5 +1,10 @@
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
+html{
+    height: 100%;
+    width: 100%;    
+}
+
 body{
     background: url('../src/Images/BackgroundStarWars.jpg') no-repeat center center fixed; 
     -webkit-background-size: cover;
