@@ -4,10 +4,9 @@ import { IndexComponent } from './index/index.component';
 import { DetailsComponent } from './details/details.component';
 
 const routes: Routes = [
-  { path: 'index', component: IndexComponent },
+  { path: 'StarWarsAngularProject', redirectTo: '', pathMatch: 'full' },
+  { path: '', component: IndexComponent },
   { path: 'details/:property/:id', component: DetailsComponent },
-  { path: '', redirectTo: '/index', pathMatch: 'full'},
-  { path: 'StarWarsAngularProject', redirectTo: '/index' },
 ];
 
 @NgModule({

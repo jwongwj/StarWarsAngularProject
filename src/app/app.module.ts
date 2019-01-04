@@ -13,7 +13,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../environments/environment';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
-
+import { PathLocationStrategy, LocationStrategy } from '@angular/common';
+import {APP_BASE_HREF} from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +38,8 @@ import { AppRoutingModule, routingComponents } from './app-routing.module';
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
+    {provide: LocationStrategy, useClass: PathLocationStrategy},
+    {provide: APP_BASE_HREF, useValue: '/StarWarsAngularProject/'},
     CookieService
   ],
   bootstrap: [AppComponent]
