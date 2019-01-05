@@ -7,10 +7,12 @@ const routes: Routes = [
   { path: 'StarWarsAngularProject', redirectTo: '', pathMatch: 'full' },
   { path: '', component: IndexComponent },
   { path: 'details/:property/:id', component: DetailsComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full'}
 ];
 
 @NgModule({
   imports: [
+    // RouterModule.forRoot(routes, {useHash: true})
     RouterModule.forRoot(routes)
   ],
   exports: [ RouterModule]
