@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-footer',
@@ -7,9 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private eRef: ElementRef) { }
   isHovering: boolean = false;
-
+  
   ngOnInit() {
   }
 
@@ -23,5 +23,13 @@ export class FooterComponent implements OnInit {
 
   checkCreditsImg(){
     return !this.isHovering;
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    if(!this.eRef.nativeElement.contains(event.target)) {
+      //click outside
+      this.isHovering=false;
+    }
   }
 }

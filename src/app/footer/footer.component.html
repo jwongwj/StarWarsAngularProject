@@ -9,13 +9,15 @@
     <img class="infoImg" src="assets/icons8-info-64.png">
 </div>
 
-<div class="creditsDetails" [hidden]="checkCreditsImg()" (mouseleave)="mouseLeft()">
+<div class="creditsDetails" [hidden]="checkCreditsImg()" (mouseleave)="mouseLeft()" (click)='clickout($event)'>
     <div class="createdBy">
         <h5>Created By</h5>
     </div>
     <div>
-        <img class="jayden" src="assets/Star_wars_longshadow-03.png">
-        <img class="esther" src="assets/Star_wars_longshadow-06.png">
+        <a href="https://github.com/jwongwj">
+        <img class="jayden" src="assets/Star_wars_longshadow-03.png"></a>
+        <a href="https://github.com/esthoon">
+        <img class="esther" src="assets/Star_wars_longshadow-06.png"></a>
     </div>
     <div class="creditsName">
         <div class="cnJayden"><a href="https://github.com/jwongwj">Jayden</a></div>
