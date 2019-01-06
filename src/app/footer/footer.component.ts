@@ -27,6 +27,7 @@ export class FooterComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   clickout(event) {
+    this.isHovering=false;
     if(!this.eRef.nativeElement.contains(event.target)) {
       //click outside
       this.isHovering=false;
